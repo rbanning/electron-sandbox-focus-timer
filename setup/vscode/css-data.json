@@ -1,0 +1,29 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@tailwind",
+      "description": "Use the @tailwind directive to insert Tailwind's `base`, `components`, `utilities`, and `screens` styles into your CSS."
+    },
+    {
+      "name": "@apply",
+      "description": "Use @apply to inline any existing utility classes into your own custom CSS."
+    },
+    {
+      "name": "@theme",
+      "description": "allows you to define your project's custom design tokens directly within your global CSS file, replacing the theme section in tailwind.config.js for certain customizations."
+    },
+    {
+      "name": "@reference",
+      "description": "allows import of tailwind v4 or custom css definitions without actually importing the styles."
+    },
+    {
+      "name": "@utility",
+      "description": "allows addition of tailwind v4 utility classes."
+    },
+    {
+      "name": "@plugin",
+      "description": "allows addition of tailwind v4 plugins."
+    }
+  ]
+}

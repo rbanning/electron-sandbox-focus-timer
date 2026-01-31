@@ -27,7 +27,12 @@ yarn-error.log
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/mcp.json
+!.vscode/css-data.json
 .history/*
+
+# Sensitive Data
+.npmrc-verbose
+
 
 # Miscellaneous
 /.angular/cache

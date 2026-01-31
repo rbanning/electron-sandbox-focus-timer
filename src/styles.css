@@ -1,3 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+
 
 @import "tailwindcss";
+
+@import "./fonts.css";
+
+.view-container {
+  @apply max-w-5xl mx-auto;
+}
+
+
+h1 { @apply flex items-center justify-center gap-2 font-serif font-light text-slate-600 text-4xl sm:text-5xl; }
+h2 { @apply flex items-center justify-start gap-2 font-serif font-semibold text-slate-900 text-2xl sm:text-3xl; }
+h3 { @apply flex items-center justify-start gap-2 font-serif font-bold text-slate-400 uppercase text-lg sm:text-xl; }
+
+a.primary { @apply text-slate-700 hover:text-slate-900 transition-colors;}
+

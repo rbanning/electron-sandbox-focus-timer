@@ -1,0 +1,1 @@
+export type BasicObject = Record<string, unknown>;

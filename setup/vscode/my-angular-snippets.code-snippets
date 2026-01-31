@@ -1,0 +1,64 @@
+{
+	// Author: Robert Banning
+
+	"Console Debug": {
+		"scope": "javascript,typescript",
+		"prefix": "log-debug",
+		"body": [
+			"console.log('DEBUG: $1', {$2});"
+		],
+		"description": "Log a DEBUG message to the console"
+	},
+
+	"Angular Sandalone Component": {
+		"scope": "typescript",
+		"prefix": "my-standalone",
+		"description": "Scaffolds a basic standalone component in Angular",
+		"body": [
+			"import { Component } from '@angular/core';",
+			"import { CommonModule } from '@angular/common';",
+			"",
+			"@Component({",
+			"\tselector: '${1|hallpass,app,core,ui,feature|}-${2:name}',",
+			"\tstandalone: true,",
+			"\timports: [CommonModule],",
+			"\ttemplateUrl: './${2:name}.component.html',",
+			"\tstyles: ':host { display: ${3:block}; }'",
+			"})",
+			"export class ${4:${2/(.*)/${1:/pascalcase}/}}Component {",
+			"",
+			"",
+			"}",			
+			"",
+		]
+	},
+
+	"Angular Sandalone Inline Component": {
+		"scope": "typescript",
+		"prefix": "my-standalone-inline",
+		"description": "Scaffolds a basic standalone component in Angular",
+		"body": [
+			"import { Component } from '@angular/core';",
+			"import { CommonModule } from '@angular/common';",
+			"",
+			"@Component({",
+			"\tselector: '${1|hallpass,app,core,ui,feature|}-${2:name}',",
+			"\tstandalone: true,",
+			"\timports: [CommonModule],",
+			"\ttemplate: `",
+			"",
+			"\t`,",
+			"\tstyles: ':host { display: ${3:block}; }'",
+			"})",
+			"export class ${4:${2/(.*)/${1:/pascalcase}/}}Component {",
+			"",
+			"\t$0",
+			"",
+			"}",			
+			"",
+		]
+	}
+
+
+
+}

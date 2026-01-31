@@ -1,0 +1,22 @@
+/* Define the custom sans, serif, and brand fonts used in the app */
+@theme {
+  /* tailwind customization using variables (--font-sans, --font-serif, and --font-brand) */
+  --font-sans: 'var(--font-sans)',      /* (e.g. Open Sans) */
+                'ui-sans-serif',
+                'system-ui',
+                'sans-serif'; 
+  --font-serif: 'var(--font-serif)',    /* (e.g. Roboto Slab) */
+                'ui-serif',
+                'serif';
+  --font-brand: 'var(--font-brand)',    /* (e.g. Advent Pro) */ 
+                'ui-sans-serif',
+                'system-ui',
+                'sans-serif';
+}
+
+/* Set the variables */
+:root {
+  --font-sans: 'Open Sans';
+  --font-serif: 'Roboto Slab';
+  --font-brand: 'Advent Pro';
+} 
