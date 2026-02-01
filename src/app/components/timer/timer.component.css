@@ -1,0 +1,15 @@
+@reference "tailwindcss";
+
+:host {
+  display: block;
+  .btn {
+    @apply py-4 px-6 bg-slate-300 text-slate-800 rounded-xl text-2xl cursor-pointer;
+  }
+  .tab {
+    @apply flex-1 py-1 text-center cursor-pointer text-xl
+      bg-slate-200 text-slate-800 hover:bg-slate-400 hover:text-slate-50 transition-colors;
+    &.current {
+      @apply bg-slate-700 text-slate-50 hover:bg-slate-800 hover:text-slate-100 transition-colors;
+    }
+  }
+}

@@ -1,9 +1,8 @@
 import { Component, computed, input, signal } from '@angular/core';
-import { TimerState } from '@components/timer/timer-state.type';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faAlarmClock } from '@fortawesome/pro-duotone-svg-icons';
-import { exhaustiveCheck } from '@src/common/misc';
 import { environment } from '@src/environments/environment';
+import { TimerState } from '@components/timer/timer-state.type';
 
 
 

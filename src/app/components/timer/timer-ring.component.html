@@ -1,0 +1,26 @@
+<div class="ring-container">
+  <svg viewBox="0 0 120 120" class="ring-svg">
+    <!-- Background circle (unfilled ring) -->
+    <circle
+      cx="60"
+      cy="60"
+      r="50"
+      class="ring-background"
+    />
+    
+    <!-- Progress circle (animated fill) -->
+    <circle
+      cx="60"
+      cy="60"
+      r="50"
+      class="ring-progress"
+      [style.stroke-dashoffset.px]="strokeDashoffset()"
+    />
+  </svg>
+  
+  <!-- Percentage text in center -->
+  <div class="ring-text flex flex-col justify-center items-center">
+    <span class="font-bold text-3xl">{{ roundedPercent() }}%</span>
+    <span class="font-light text-xl">{{ roundedRemaining() }} sec.</span>
+  </div>
+</div>

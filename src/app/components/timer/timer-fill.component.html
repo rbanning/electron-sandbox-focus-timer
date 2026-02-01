@@ -1,0 +1,10 @@
+<div class="relative w-100 h-75 mx-auto border-8 rounded-xl border-slate-600 border-t-transparent overflow-hidden">
+  <div class="fill bg-slate-400 w-full h-full" [style]="fillStyles()">
+
+  </div>
+  <!-- Percentage text in center -->
+  <div class="fill-text flex flex-col justify-center items-center">
+    <span class="font-bold text-3xl">{{ roundedPercent() }}%</span>
+    <span class="font-light text-xl">{{ roundedRemaining() }} sec.</span>
+  </div>
+</div>

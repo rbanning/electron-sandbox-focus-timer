@@ -1,0 +1,7 @@
+  <div class="relative border-2 border-slate-400 w-full h-12">
+    <span class="absolute top-0 bottom-0 left-0 bg-slate-500" [style]="barStyles()"></span>
+    <span class="absolute top-0 bottom-0 left-0 w-full text-black font-bold flex justify-center items-center" [style]="textStyles()">
+      <span>{{roundedPercent()}}%</span>
+    </span>
+  </div>
+  <div class="text-center">{{roundedRemaining()}} sec. remaining</div>
