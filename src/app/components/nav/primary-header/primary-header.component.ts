@@ -1,13 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrandComponent } from '@components/brand/brand.component';
 import { RouterLinkWithHref } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBars, faXmarkSquare } from '@fortawesome/pro-duotone-svg-icons';
+import { BrandComponent } from '@components/brand/brand.component';
 
 @Component({
   selector: 'app-primary-header',
   standalone: true,
-  imports: [CommonModule, RouterLinkWithHref, BrandComponent],
+  imports: [CommonModule, RouterLinkWithHref, BrandComponent, FontAwesomeModule],
   templateUrl: './primary-header.component.html',
   styles: ':host { display: block; }'
 })
-export class PrimaryHeaderComponent {}
+export class PrimaryHeaderComponent {
+  protected active = signal(false);
+
+  icons = {
+    menu: faBars,
+    close: faXmarkSquare
+  }
+  toggle() {
+    this.active.update(v => !v);
+  }
+}

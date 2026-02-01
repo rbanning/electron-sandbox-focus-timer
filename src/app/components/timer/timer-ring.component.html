@@ -1,4 +1,4 @@
-<div class="ring-container">
+<div class="ring-container w-48 h-48 sm:w-60 sm:h-60 md:w-80 md:h-80">
   <svg viewBox="0 0 120 120" class="ring-svg">
     <!-- Background circle (unfilled ring) -->
     <circle
@@ -21,6 +21,6 @@
   <!-- Percentage text in center -->
   <div class="ring-text flex flex-col justify-center items-center">
     <span class="font-bold text-3xl">{{ roundedPercent() }}%</span>
-    <span class="font-light text-xl">{{ roundedRemaining() }} sec.</span>
+    <span class="font-light text-xl">{{ formattedRemaining() }}</span>
   </div>
 </div>

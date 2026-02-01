@@ -12,11 +12,11 @@ import { timeFormatter } from './time-formatter';
 export class TimerRingComponent {
 
   //inputs
-  remaining = input<number>(0);
+  remaining = input<number>(0); //seconds
   percent = input<number>(0);
 
   //computed
-  roundedRemaining = computed(() => timeFormatter.remaining(this.remaining()));
+  formattedRemaining = computed(() => timeFormatter.remaining(this.remaining()));
   roundedPercent = computed(() => timeFormatter.percent(this.percent()));
   
   // SVG circle circumference (radius = 50, so C = 2πr ≈ 314.16)

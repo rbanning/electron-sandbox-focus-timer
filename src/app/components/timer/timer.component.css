@@ -3,10 +3,12 @@
 :host {
   display: block;
   .btn {
-    @apply py-4 px-6 bg-slate-300 text-slate-800 rounded-xl text-2xl cursor-pointer;
+    @apply py-1 px-2 sm:py-2 sm:px-4 md:py-4 md:px-6 
+      bg-slate-300 text-slate-800 
+      text-lg rounded-lg sm:text-xl sm:rounded-lg md:text-2xl md:rounded-xl  cursor-pointer;
   }
   .tab {
-    @apply flex-1 py-1 text-center cursor-pointer text-xl
+    @apply flex-1 py-1 text-center cursor-pointer md:text-lg
       bg-slate-200 text-slate-800 hover:bg-slate-400 hover:text-slate-50 transition-colors;
     &.current {
       @apply bg-slate-700 text-slate-50 hover:bg-slate-800 hover:text-slate-100 transition-colors;

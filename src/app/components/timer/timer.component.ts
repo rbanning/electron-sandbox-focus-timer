@@ -1,4 +1,4 @@
-import { Component, OnDestroy, signal } from '@angular/core';
+import { Component, computed, input, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TimerBarComponent } from './timer-bar.component';
 import { TimerRingComponent } from './timer-ring.component';
@@ -8,6 +8,8 @@ import { faPause, faPlay, faStop, faPowerOff } from '@fortawesome/pro-duotone-sv
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { strHelp } from '@common/general';
 import { TimerFillComponent } from './timer-fill.component';
+import { TimeObject } from './timer-unit.type';
+import { timeToSeconds } from './time-to-seconds';
 
 const timerViews = ['ring', 'bar', 'fill'] as const;
 type TimerView = typeof timerViews[number];
@@ -22,8 +24,12 @@ type TimerView = typeof timerViews[number];
 })
 export class TimerComponent implements OnDestroy {
 
-  protected totalTime = signal(10); //seconds  
-  protected remaining = signal(10);
+  // inputs
+  time = input<TimeObject>({ value: 2, unit: 'minute' });
+
+  // signals
+  protected totalTime = computed(() => timeToSeconds(this.time())); //seconds  
+  protected remaining = signal(0);
   protected percent = signal(0);
   protected state = signal<TimerState>('idle');
   protected view = signal<TimerView>(timerViews[0]);
@@ -65,7 +71,7 @@ export class TimerComponent implements OnDestroy {
   }
 
   stop() {  
-    this.remaining.set(0);
+    this.remaining.set(this.totalTime());
     this.percent.set(100);  
     this.state.set('complete');
     this.clearInterval();
@@ -83,8 +89,6 @@ export class TimerComponent implements OnDestroy {
       this.percent.set((this.totalTime() - value) / this.totalTime() * 100);
     }
     else {
-      this.remaining.set(0);
-      this.percent.set(100);
       this.stop()
     }
   }
@@ -129,7 +133,7 @@ export class TimerComponent implements OnDestroy {
     oscillator.frequency.value = frequency;
     oscillator.type = 'sine';
 
-    // ADSR-like envelope for smoother sound
+    // envelope for smoother sound
     gainNode.gain.setValueAtTime(0, startTime);
     gainNode.gain.linearRampToValueAtTime(volume, startTime + 0.01);
     gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration - 0.05);

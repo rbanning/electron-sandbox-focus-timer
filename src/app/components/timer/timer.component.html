@@ -1,13 +1,4 @@
-<h2>Timer</h2>
-<div class="flex">
-  @for (v of views(); track v) {
-    <button 
-      [title]="`change to ${v} view`"
-      (click)="setView(v)"
-      class="tab" [class.current]="view() === v">{{capitalize(v)}}</button>
-  }
-</div>
-<div class="my-12 flex justify-center">
+<div class="flex justify-center">
     @switch (view()) {
       @case ('ring') {
         <app-timer-ring [remaining]="remaining()" [percent]="percent()" />
@@ -28,7 +19,7 @@
       <button 
         type="button"
         title="start the timer"
-        (click)="start()"
+        (click)="restart()"
         class="btn">
         <fa-duotone-icon [icon]="icons.start" />
       </button>
@@ -67,5 +58,13 @@
         <fa-duotone-icon [icon]="icons.restart" />
       </button>
     }
+  }
+</div>
+<div class="flex my-4 sm:my-6 md:my-8 ">
+  @for (v of views(); track v) {
+    <button 
+      [title]="`change to ${v} view`"
+      (click)="setView(v)"
+      class="tab" [class.current]="view() === v">{{capitalize(v)}}</button>
   }
 </div>
