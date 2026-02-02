@@ -1,19 +1,25 @@
-import { primitive } from "@common/general";
-import { TimeObject, TimerUnit } from "./timer-unit.type";
+import { exhaustiveCheck } from "@common/misc";
+import { TimerUnit } from "./timer-unit.type";
+import { isTimeObject, TimeObject } from "./time-object.type";
 
 
 
 export function timeToSeconds(value: TimeObject): number;
 export function timeToSeconds(value: number, unit: TimerUnit): number;
 export function timeToSeconds(value: TimeObject | number, unit?: TimerUnit): number {
-  unit = primitive.isNumber(value)
-    ? (unit)
-    : value.unit;
-  const num = primitive.isNumber(value)
-    ? value
-    : value.value;
+  let num: number = 0;
+  let u: TimerUnit = 'second';
 
-  switch (unit) {
+  if (isTimeObject(value)) {
+    u = value.unit;
+    num = value.value;
+  }
+  else {
+    u = unit ?? u;
+    num = value;
+  }
+
+  switch (u) {
     case 'second':
       return num;
     case 'minute':
@@ -23,6 +29,6 @@ export function timeToSeconds(value: TimeObject | number, unit?: TimerUnit): num
     case 'day':
       return num * 60 * 60 * 24;
     default:
-      throw new Error("timerToSeconds() requires a unit");
+      exhaustiveCheck(u);
   }
 }

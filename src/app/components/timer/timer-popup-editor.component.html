@@ -9,10 +9,9 @@
 @if (state() === 'open') {
   <div 
     (click)="toggle()"
-    class="overlay fixed top-0 bottom-0 left-0 right-0 bg-slate-700/5 z-40"></div>
-  <div class="modal fixed top-[30%] left-[50%] -translate-y-[50%] -translate-x-[50%] 
-              border border-slate-700 shadow-lg rounded-lg overflow-hidden z-50">
-      <div class="w-sm">
+    class="overlay"></div>
+  <div class="modal">
+      <div class="modal-inner">
         <!-- header -->
         <div class="py-1 px-2 bg-slate-500 text-slate-50 flex items-center">
           <span class="flex-1">Edit Timer</span>
@@ -24,37 +23,58 @@
           </button>
         </div>
         <!-- body -->
-        <div class="grid grid-cols-2 py-1 px-2 bg-white">
-          <div class="flex flex-col justify-center items-center gap-1">
-            <label for="value" class="font-bold">Value</label>
-            <input 
-              type="number" 
-              id="value" name="value"
-              [min]="0"
-              [max]="maxTimeValue()"
-              [step]="stepTimeValue()"
-              [ngModel]="timeValue()"
-              (change)="onValueSelected($any($event.target).value)"
-              class=""
-            />
+        <div class="py-1">
+          <!-- time -->
+          <div class="grid grid-cols-2">
+            <div class="col-span-2 text-center font-bold text-slate-500 text-xl bg-slate-50">
+              Time
+            </div>
+            <div class="flex flex-col justify-center items-center gap-1">
+              <label for="value" class="font-bold">Value</label>
+              <input 
+                type="number" 
+                id="value" name="value"
+                [min]="0"
+                [max]="maxTimeValue()"
+                [step]="stepTimeValue()"
+                [ngModel]="timeValue()"
+                (change)="onValueSelected($any($event.target).value)"
+                class=""
+              />
+            </div>
+            <div class="flex flex-col justify-center items-center gap-1">
+              <label for="unit" class="font-bold">Unit</label>
+              <select 
+                id="unit" name="unit"
+                [ngModel]="timeUnit()"
+                (change)="onUnitSelected($any($event.target).value)"              
+                class=""
+              >
+                <option disabled value="">--select unit--</option>
+                @for (unit of units; track unit) {
+                  <option [value]="unit">{{unit}}</option>
+                }
+              </select>
+            </div>
           </div>
-          <div class="flex flex-col justify-center items-center gap-1">
-            <label for="unit" class="font-bold">Unit</label>
-            <select 
-              id="unit" name="unit"
-              [ngModel]="timeUnit()"
-              (change)="onUnitSelected($any($event.target).value)"              
-              class=""
-            >
-              <option disabled value="">--select unit--</option>
-              @for (unit of units; track unit) {
-                <option [value]="unit">{{unit}}</option>
+          <!-- view -->
+          <div class="my-4">
+            <div class="text-center font-bold text-slate-500 text-xl bg-slate-50">
+              View
+            </div>
+            <div class="flex">
+              @for (v of views; track v) {
+                <button 
+                  [title]="`change to ${v} view`"
+                  (click)="onViewSelected(v)"
+                  class="tab" [class.current]="view() === v">{{capitalize(v)}}</button>
               }
-            </select>
+            </div>
+  
           </div>
         </div>
         <!-- footer -->
-         <div class="flex justify-center gap-2 py-1 px-2 bg-slate-100">
+         <div class="flex justify-center gap-2 py-4 px-2 bg-slate-100">
             <button 
               type="button"
               (click)="saveEdits()"

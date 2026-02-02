@@ -1,6 +1,7 @@
 import { castAs } from "@common/types";
 
 import { Injectable } from '@angular/core';
+import { primitive } from "@common/general";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class StorageService {
       this.remove(key);
     }
     else {
-      this.store.setItem(key, JSON.stringify(value));
+      this.store.setItem(key, primitive.isString(value) ? value : JSON.stringify(value));
     }
   }
 

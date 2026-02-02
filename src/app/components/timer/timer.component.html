@@ -3,7 +3,7 @@
   <app-timer-popup-editor />
 </div>
 <div class="flex justify-center">
-    @switch (view()) {
+    @switch (timer.view()) {
       @case ('ring') {
         <app-timer-ring [remaining]="timer.remaining()" [percent]="timer.percent()" />
       }
@@ -62,13 +62,5 @@
         <fa-duotone-icon [icon]="icons.reset" />
       </button>
     }
-  }
-</div>
-<div class="flex my-4 sm:my-6 md:my-8 ">
-  @for (v of views(); track v) {
-    <button 
-      [title]="`change to ${v} view`"
-      (click)="setView(v)"
-      class="tab" [class.current]="view() === v">{{capitalize(v)}}</button>
   }
 </div>

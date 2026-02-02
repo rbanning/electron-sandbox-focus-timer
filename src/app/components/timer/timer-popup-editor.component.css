@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+:host {
+  display: block;
+
+  .overlay {
+    @apply fixed top-0 bottom-0 left-0 right-0 bg-slate-100/50 z-40;
+  }
+  .modal {
+    @apply fixed top-[30%] left-[50%] -translate-y-[50%] -translate-x-[50%] 
+      z-50 bg-white/95 border-2 border-slate-300 rounded-xl p-12;
+    .modal-inner {
+      @apply w-sm bg-white shadow-lg rounded-xl;
+    }
+  }
+
+  input, select {
+    @apply py-1 px-2
+      bg-slate-50 text-slate-800 
+      focus:bg-white focus:text-black
+      border border-slate-400 rounded-md
+      focus:border-slate-800;
+  }
+  .tab {
+    @apply flex-1 py-1 text-center cursor-pointer md:text-lg
+      bg-slate-200 text-slate-800 hover:bg-slate-400 hover:text-slate-50 transition-colors;
+    &.current {
+      @apply bg-slate-700 text-slate-50 hover:bg-slate-800 hover:text-slate-100 transition-colors;
+    }
+  }
+}

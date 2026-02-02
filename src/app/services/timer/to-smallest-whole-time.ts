@@ -1,5 +1,6 @@
+import { TimeObject } from "./time-object.type";
 import { timeToSeconds } from "./time-to-seconds";
-import { TimerUnit, TimeObject, timerUnits } from "./timer-unit.type";
+import { TimerUnit, timerUnits } from "./timer-unit.type";
 
 /**
  * Keeping this function even though it is not used...

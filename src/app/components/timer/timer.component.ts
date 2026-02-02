@@ -1,16 +1,15 @@
-import { Component, inject, input, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { faPause, faPlay, faStop, faPowerOff } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { strHelp } from '@common/general';
+import { TimerService } from '@services/timer/timer.service';
+
 import { TimerFillComponent } from './timer-fill.component';
 import { TimerBarComponent } from './timer-bar.component';
 import { TimerRingComponent } from './timer-ring.component';
-import { TimerService } from '@services/timer/timer.service';
 import { TimerPopupEditorComponent } from './timer-popup-editor.component';
-
-const timerViews = ['ring', 'bar', 'fill'] as const;
-type TimerView = typeof timerViews[number];
 
 
 @Component({
@@ -25,10 +24,6 @@ type TimerView = typeof timerViews[number];
 })
 export class TimerComponent implements OnDestroy {
 
-  // signals
-  protected view = signal<TimerView>(timerViews[0]);
-  protected views = signal(timerViews);
-
   protected capitalize = strHelp.capitalize;
 
   protected icons = {
@@ -40,12 +35,6 @@ export class TimerComponent implements OnDestroy {
 
   //timer service
   protected readonly timer = inject(TimerService);
-
-
-  setView(view: TimerView) {
-    this.view.set(view);
-  }
-
 
   ngOnDestroy(): void {
     this.timer.reset();
