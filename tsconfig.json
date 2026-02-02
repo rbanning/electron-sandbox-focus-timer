@@ -18,6 +18,7 @@
     "paths": {
       "@common/*": ["src/app/common/*"],
       "@components/*": ["src/app/components/*"],
+      "@services/*": ["src/app/services/*"],
       "@views/*": ["src/app/views/*"],
       "@app/*": ["src/app/*"],
       "@src/*": ["src/*"]

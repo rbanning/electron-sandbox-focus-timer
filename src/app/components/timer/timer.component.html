@@ -1,25 +1,29 @@
+<div class="flex justify-center items-center gap-1">
+  <h2>Timer</h2>
+  <app-timer-popup-editor />
+</div>
 <div class="flex justify-center">
     @switch (view()) {
       @case ('ring') {
-        <app-timer-ring [remaining]="remaining()" [percent]="percent()" />
+        <app-timer-ring [remaining]="timer.remaining()" [percent]="timer.percent()" />
       }
       @case ('bar') {
         <div class="flex-1">
-          <app-timer-bar [remaining]="remaining()" [percent]="percent()" />
+          <app-timer-bar [remaining]="timer.remaining()" [percent]="timer.percent()" />
         </div>
       }
       @case ('fill') {
-        <app-timer-fill [remaining]="remaining()" [percent]="percent()" />
+        <app-timer-fill [remaining]="timer.remaining()" [percent]="timer.percent()" />
       }
     }
 </div>
 <div class="flex justify-center items-center gap-4">
-  @switch (state()) {
+  @switch (timer.state()) {
     @case ('idle') {
       <button 
         type="button"
         title="start the timer"
-        (click)="restart()"
+        (click)="timer.start()"
         class="btn">
         <fa-duotone-icon [icon]="icons.start" />
       </button>
@@ -28,7 +32,7 @@
       <button 
         type="button"
         title="pause the timer"
-        (click)="pause()"
+        (click)="timer.pause()"
         class="btn">
         <fa-duotone-icon [icon]="icons.pause" />
       </button>
@@ -37,14 +41,14 @@
       <button 
         type="button"
         title="start the timer again"
-        (click)="start()"
+        (click)="timer.start()"
         class="btn">
         <fa-duotone-icon [icon]="icons.start" />
       </button>
       <button 
         type="button"
         title="stop the timer"
-        (click)="stop()"
+        (click)="timer.stop()"
         class="btn">
         <fa-duotone-icon [icon]="icons.stop" />
       </button>
@@ -52,10 +56,10 @@
     @case ('complete') {
       <button 
         type="button"
-        title="restart the timer"
-        (click)="restart()"
+        title="reset the timer"
+        (click)="timer.reset()"
         class="btn">
-        <fa-duotone-icon [icon]="icons.restart" />
+        <fa-duotone-icon [icon]="icons.reset" />
       </button>
     }
   }
