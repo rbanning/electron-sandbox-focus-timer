@@ -1,0 +1,29 @@
+<h2>
+  <span>Projects</span>
+  <button type="button" class="cursor-pointer" (click)="toggleFilterUI()">
+    <fa-duotone-icon 
+      [icon]="icons.filters" 
+      size="sm"
+      [primaryColor]="filterCount() > 0 ? 'coral' : 'black'"
+    />
+  </button>
+</h2>
+
+@if(showFilterUI()) {
+  <div class="p-4 mt-2 border border-slate-400 rounded space-y-2">
+    <div class="flex flex-wrap items-center gap-4">
+      <span>Status:</span>
+      <app-project-list-filter-status (filterUpdated)="updateFilter('status', $event)" />
+    </div>
+    <div class="flex flex-wrap items-center gap-4">
+      <span>Type:</span>
+      <app-project-list-filter-type (filterUpdated)="updateFilter('type', $event)" />
+    </div>
+  </div>
+}
+
+<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+    @for (project of filteredProjects(); track project) {
+      <app-project-card [project]="project" />
+    }
+  </div>

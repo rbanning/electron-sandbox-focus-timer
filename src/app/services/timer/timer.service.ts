@@ -75,7 +75,7 @@ export class TimerService {
   }
 
   public stop() {
-    this._state.set('complete');
+    this._state.set('completed');
     this._remaining.set(this.totalSeconds());
     this._percent.set(100);
     this._clearInterval();
@@ -90,7 +90,7 @@ export class TimerService {
   }
 
   public pause() {
-    this._state.set(this._remaining() > 0 ? 'paused' : 'complete');
+    this._state.set(this._remaining() > 0 ? 'paused' : 'completed');
     this._clearInterval();
   }
 
@@ -103,7 +103,7 @@ export class TimerService {
       this._percent.set((this.totalSeconds() - remaining) / this.totalSeconds() * 100);
     }
     else {
-      this.stop();  //complete
+      this.stop();  //completed
     }
   }
   private _updateTimerStore(store: TimerStore): void;

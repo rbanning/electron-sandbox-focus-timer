@@ -31,7 +31,7 @@ export class BrandComponent {
         return { primary: 'steelblue', secondary: 'gray' };
       case 'paused':
         return { primary: 'darkmagenta', secondary: 'gray' };
-      case 'complete':
+      case 'completed':
         return { primary: 'limegreen', secondary: 'gray' };      
     }
   })

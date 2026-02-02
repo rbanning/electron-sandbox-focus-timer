@@ -11,7 +11,7 @@ import { TimerUnit, timerUnits } from "./timer-unit.type";
  * but it was suggested by AI
  * 
  * Original Prompt
- * Please complete the function timerUnitConverter that will convert the time object 
+ * Please completed the function timerUnitConverter that will convert the time object 
  * into the smallest whole number unit.  
  * For example, if value is 130 seconds, it will return 2.166 minutes, 
  * and if value is 130 minutes, it will return 2.166 hours, 

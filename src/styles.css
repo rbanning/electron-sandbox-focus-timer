@@ -4,6 +4,20 @@
 
 @import "./fonts.css";
 
+/* customize tailwind */
+@theme {
+  --word-spacing-tightest: -0.3em;
+  --word-spacing-tighter: -0.2em;
+  --word-spacing-tight: -0.1em;
+  --word-spacing-normal: 0em;
+  --word-spacing-wide: 0.1em;
+  --word-spacing-wider: 0.2em;
+  --word-spacing-widest: 0.3em;
+}
+@utility word-spacing-* {
+  word-spacing: --value(--word-spacing-*, [*]);  /* default allows arbitrary values */
+}
+
 .view-area {
   @apply max-w-5xl mx-auto;
 }

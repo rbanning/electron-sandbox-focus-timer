@@ -1,6 +1,20 @@
 import { castAs, Nullable } from "../types";
 import { primitive } from "./primitive";
 
+export const arrayHelp = {
+  randomize, 
+  random,
+  unique,
+  take,
+  first, last,
+  inBounds,
+  fill,
+  extract,
+  removeNullable,
+  elementsOfType
+} as const;
+
+
 function randomize<T>(arr: T[], count?: number): T[] {
   if (Array.isArray(arr)) {
     const clone = arr.slice();
@@ -114,14 +128,11 @@ function removeNullable<T>(array: Nullable<T>[]): T[] {
   return castAs<T[]>(array.filter(m => !primitive.isNullish(m)));
 }
 
-export const arrayHelp = {
-  randomize, 
-  random,
-  unique,
-  take,
-  first, last,
-  inBounds,
-  fill,
-  extract,
-  removeNullable
+
+function elementsOfType<T>(value: unknown, tester: (x: unknown) => x is T): value is T[] {
+  if (Array.isArray(value)) {
+    return value.every(x => tester(x));
+  }
+  //else
+  return false;
 }
