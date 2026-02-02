@@ -17,6 +17,7 @@ import { ProjectType } from '@services/todo/project.model';
       [secondaryOpacity]=".6"
       [secondaryColor]="colors[type()][1]"
     />
+    <span class="sr-only">{{type()}}</span>
   `,
   styles: ':host { display: block; }'
 })

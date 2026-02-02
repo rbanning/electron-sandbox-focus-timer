@@ -17,6 +17,7 @@ import { ProjectStatus } from '@services/todo/project.model';
       [secondaryOpacity]="0.7"
       [secondaryColor]="colors[status()][1]"
     />
+    <span class="sr-only">{{status()}}</span>
   `,
   styles: ':host { display: block; }'
 })

@@ -14,7 +14,7 @@ import { ProjectTypeComponent } from './project-type.component';
   </button>
   @for (item of items(); track item) {
     <button type="button" (click)="toggle(item)" class="btn" [class.active]="filters().includes(item)">
-      <app-project-type [type]="item" size="1x" />
+      <app-project-type [type]="item" size="1x" />    
     </button>
   }
 </div>
