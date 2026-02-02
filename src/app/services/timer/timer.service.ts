@@ -1,15 +1,18 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { TimeObject, TimerUnit } from './timer-unit.type';
+import { TimeObject, TimerUnit, timerUnits } from './timer-unit.type';
 import { timeToSeconds } from './time-to-seconds';
 import { TimerState } from './timer-state.type';
 import { Nullable } from '@common/types';
 import { AlarmService } from '../alarm/alarm.service';
+import { StorageService } from '@services/storage/storage.service';
+import { primitive, strHelp } from '@common/general';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
   //constants
+  private readonly KEY = "hallpass-timer"; //storage key;
   private readonly DELAY = 0.1; //seconds;
 
   //private (internal) properties
@@ -20,8 +23,9 @@ export class TimerService {
 
   private _intervalId: Nullable<number>;
 
-  //inject alarm service
+  //inject alarm and storage service
   private readonly alarm = inject(AlarmService);
+  private readonly storage = inject(StorageService);
 
   //public readonly properties
   public readonly state = computed(() => this._state());
@@ -33,14 +37,22 @@ export class TimerService {
 
   constructor() {
     //initialize the time...
-    // todo: get the time from local storage (saved)
-    this.setTime(1, 'minute');
+    const savedTime = this.storage.get<TimeObject>(this.KEY)
+    if (primitive.isNumber(savedTime?.value) && strHelp.isStringUnionType<TimerUnit>(savedTime?.unit, timerUnits)) {
+      this.setTime(savedTime.value, savedTime.unit);
+    }
+    else {
+      this.setTime(1, 'minute');
+      console.log("using default time", this.time());
+    }
   }
 
 
   //public methods
   public setTime(value: number, unit: TimerUnit) {
-    this._time.set({ value, unit });
+    const time: TimeObject = { value, unit };
+    this._time.set(time);
+    this.storage.set(this.KEY, time);
     //regardless of the current state, changing the time automatically resets the timer 
     this.reset();
   }
@@ -91,4 +103,6 @@ export class TimerService {
       window.clearInterval(this._intervalId);
     }
   }
+
+  
 }
