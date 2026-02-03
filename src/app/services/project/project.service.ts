@@ -25,12 +25,16 @@ export class ProjectService {
 
   //public methods
 
-  addProject(project: IProject) {
+  exists(projectId: string) {
+    return this._projects().some(m => m.id === projectId);
+  }
+
+  add(project: IProject) {
     this._projects.update(items => [...items, project]);
     this._save();
   }
 
-  updateProject(projectId: string, changes: Partial<IProject>) {
+  update(projectId: string, changes: Partial<IProject>) {
     this._projects.update(items => items.map(item => {
       if (item.id === projectId) {
         return {...item, ...changes};
@@ -40,9 +44,10 @@ export class ProjectService {
     }))
   }
 
-  removeProject(project: IProject): boolean;
-  removeProject(projectId: string): boolean;
-  removeProject(arg: IProject | string): boolean {
+
+  remove(project: IProject): boolean;
+  remove(projectId: string): boolean;
+  remove(arg: IProject | string): boolean {
     const id = Project.isProject(arg)
       ? arg.id
       : primitive.isString(arg)
@@ -63,7 +68,10 @@ export class ProjectService {
   }
 
 
-
+  seed(projects: IProject[]) {
+    this._projects.set(projects);
+    this._save();
+  }
 
   //private (helper) methods
 

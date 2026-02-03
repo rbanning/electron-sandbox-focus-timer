@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, SizeProp } from '@fortawesome/angular-fontawesome';
 import { faCircle, faCircleCheck, faCircleDot, faCircleExclamation, faCircleMinus, faCircleXmark, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
-import { ProjectStatus } from '@services/todo/project.model';
+import { ProjectStatus } from '@services/project/project.model';
 
 @Component({
   selector: 'app-project-status',
@@ -23,7 +23,7 @@ import { ProjectStatus } from '@services/todo/project.model';
 })
 export class ProjectStatusComponent {
 
-  status = input<ProjectStatus>('pending');
+  status = input.required<ProjectStatus>();
   size = input<SizeProp>('sm');
 
   icons: Record<ProjectStatus, IconDefinition> = {

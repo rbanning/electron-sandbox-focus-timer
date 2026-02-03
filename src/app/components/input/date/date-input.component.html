@@ -1,0 +1,63 @@
+
+@if (active()) {
+  <div class="editor">
+    <div class="flex justify-center items-center gap-2">
+      <input 
+        type="number" 
+        name="day" id="day"         
+        [min]="1" [max]="daysInMonth()"
+        [ngModel]="day()"
+        placeholder="dd"
+        (change)="update('day', ($event.target).value)"
+      />
+      <select 
+        name="month" id="month"
+        [ngModel]="month()"
+        (change)="update('month', $any($event.target).value)"
+      >
+        <option value="">mm</option>
+        @for(item of months; track item; let idx = $index) {
+          <option [value]="idx">{{item}}</option>
+        }
+      </select>
+      <input 
+        type="number" 
+        name="year" id="year"         
+        [min]="2000" [max]="3000"
+        [ngModel]="year()"
+        placeholder="yyyy"
+        (change)="update('year', ($event.target).value)"
+      />
+    </div>
+    <div class="mt-1 flex justify-end items-center gap-2">
+      <button type="button" class="action" (click)="done()">
+        <fa-duotone-icon [icon]="icons.save" />
+        <span class="sr-only">save</span>
+      </button>
+      <button type="button" class="action action-default" (click)="cancel()">
+        <fa-duotone-icon [icon]="icons.cancel" />
+        <span class="sr-only">cancel</span>
+      </button>
+      <button type="button" class="action action-default" (click)="today()">
+        <fa-duotone-icon [icon]="icons.today" />
+        <span class="sr-only">set date to today</span>
+      </button>
+    </div>
+  </div>
+}
+@else {
+  <button 
+    type="button"  
+    (click)="toggle()"
+    [class]="'flex items-center gap-4 cursor-pointer ' + css()"
+    >
+    <span class="flex-1 inline-flex items-center gap-0">
+      <span>{{day() ?? 'dd'}}</span>
+      <span>-</span>
+      <span>{{monthText()}}</span>
+      <span>-</span>
+      <span>{{year() ?? 'yyyy'}}</span>
+    </span>
+    <fa-duotone-icon [icon]="icons.calendar" />
+  </button>
+}

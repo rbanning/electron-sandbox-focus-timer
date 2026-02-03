@@ -1,10 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { arrayHelp } from './../../common/general/array-help';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SizeProp } from '@fortawesome/fontawesome-svg-core';
-import { IProject, Project, ProjectStatus, projectStatusList, ProjectType, projectTypeList } from '@services/todo/project.model';
+import { IProject, Project, ProjectStatus, projectStatusList, ProjectType, projectTypeList } from '@services/project/project.model';
 import { ProjectStatusComponent } from '@components/project/project-status.component';
 import { ProjectTypeComponent } from '@components/project/project-type.component';
 import { ProjectListComponent } from '@components/project/project-list.component';
+import { ProjectService } from '@services/project/project.service';
 
 @Component({
   selector: 'app-test-view',
@@ -23,7 +25,10 @@ export class TestViewComponent {
 
   sizeList = signal<readonly SizeProp[]>(['sm', '1x', 'lg']);
 
-  projects = signal<readonly IProject[]>(mockProjects());
+  private service = inject(ProjectService);
+  constructor() {    
+    //this.service.seed(arrayHelp.take(mockProjects(), 2));
+  }
 }
 
 function mockProjects(): IProject[] {

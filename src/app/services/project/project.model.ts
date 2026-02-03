@@ -51,8 +51,8 @@ export class Project {
       this.status = parsers.toStringUnionType(arg.status, projectStatusList) ?? this.status;
       this.type = parsers.toStringUnionType(arg.type, projectTypeList) ?? this.type;
       this.client = parsers.toString(arg.client) ?? this.client;
-      this.startDate = parsers.toDayjsUtc(arg.startDate);
-      this.lastUpdated = parsers.toDayjsUtc(arg.lastUpdated);
+      this.startDate = parsers.toDayjs(arg.startDate);
+      this.lastUpdated = parsers.toDayjs(arg.lastUpdated);
     });
   }
 

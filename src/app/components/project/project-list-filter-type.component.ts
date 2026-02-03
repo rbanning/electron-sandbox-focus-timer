@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectType, projectTypeList } from '@services/todo/project.model';
+import { ProjectType, projectTypeList } from '@services/project/project.model';
 import { ProjectTypeComponent } from './project-type.component';
 
 @Component({

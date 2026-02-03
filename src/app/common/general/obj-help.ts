@@ -4,6 +4,18 @@ import { BasicObject, castAs } from "../types";
 import { parsers } from "./parsers";
 import { primitive, TypeOfName } from "./primitive";
 
+
+export const objHelp = {
+  isAnyObject,
+  deepEqual,
+  toPlainObject,
+  toTypedObject,
+  omitProps,
+  keysOf,
+  hasKeys,
+  hasProps,
+} as const;
+
 function toPlainObject(value: unknown): BasicObject {
   try {
     if (primitive.isNullish(value)) {
@@ -44,7 +56,7 @@ function omitProps<T extends object = object>(value: T, ...keys: (keyof T)[]) {
   if (!primitive.isObject(value)) {
     throw new Error("omitProps() requires a non-null object argument");
   }
-  const obj = Object.keys(value).reduce(( ret: any, _key) => {
+  const obj = keysOf(value).reduce(( ret: any, _key) => {
     const key = castAs<keyof T>(_key);
     if (!keys.includes(key)) {
       ret[key] = value[key];
@@ -79,8 +91,8 @@ function deepEqual(v1: unknown, v2: unknown, ignore: string[] = ['key']): boolea
 
   if (isAnyObject(v1) && isAnyObject(v2)) {
     const keys = {
-      v1: Object.keys(v1),
-      v2: Object.keys(v2)
+      v1: keysOf(v1), // Object.keys(v1),
+      v2: keysOf(v2), // Object.keys(v2)
     };
 
     //do the two objects have the same number of keys
@@ -93,8 +105,8 @@ function deepEqual(v1: unknown, v2: unknown, ignore: string[] = ['key']): boolea
         //both objects must have the key
         if (!keys.v2.includes(key)) { return false; }
 
-        const val1 = (v1 as any)[key];
-        const val2 = (v2 as any)[key];
+        const val1 = v1[key]; 
+        const val2 = v2[key]; 
 
         if (!deepEqual(val1, val2, ignore)) { return false; }
       }
@@ -134,14 +146,3 @@ function hasProps<T extends BasicObject>(obj: unknown, props: PropDef[]): obj is
   );
 }
 
-
-export const objHelp = {
-  isAnyObject,
-  deepEqual,
-  toPlainObject,
-  toTypedObject,
-  omitProps,
-  keysOf,
-  hasKeys,
-  hasProps,
-};

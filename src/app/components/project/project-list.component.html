@@ -27,4 +27,12 @@
     @for (project of filteredProjects(); track project) {
       <app-project-card [project]="project" />
     }
+</div>
+
+@if(allowNew()) {
+  <div class="fixed bottom-12 left-0 w-full z-20">
+    <div class="view-area flex justify-end">      
+      <app-project-popup-editor [project]="newProject()" isNew iconSize="3x"/>
+    </div>
   </div>
+}

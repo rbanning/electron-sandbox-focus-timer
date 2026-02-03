@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, SizeProp } from '@fortawesome/angular-fontawesome';
 import { faBrowser, faChartScatterBubble, faCircle, faCircleCheck, faCircleDot, faCircleExclamation, faCircleMinus, faCircleXmark, faFeather, faGraduationCap, faWebAwesome, faWebhook, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
-import { ProjectType } from '@services/todo/project.model';
+import { ProjectType } from '@services/project/project.model';
 
 @Component({
   selector: 'app-project-type',
@@ -23,7 +23,7 @@ import { ProjectType } from '@services/todo/project.model';
 })
 export class ProjectTypeComponent {
 
-  type = input<ProjectType>('other');
+  type = input.required<ProjectType>();
   size = input<SizeProp>('sm');
 
   icons: Record<ProjectType, IconDefinition> = {

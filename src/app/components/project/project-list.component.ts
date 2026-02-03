@@ -1,36 +1,46 @@
 import { castAs } from '@common/types';
-import { Component, computed, input, signal } from '@angular/core';
+import { booleanAttribute, Component, computed, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFilters } from '@fortawesome/pro-duotone-svg-icons';
 
 import { arrayHelp, strHelp } from '@common/general';
-import { IProject, ProjectStatus, projectStatusList, ProjectType, projectTypeList } from '@services/todo/project.model';
+import { IProject, Project, ProjectStatus, projectStatusList, ProjectType, projectTypeList } from '@services/project/project.model';
 import { ProjectListFilterStatusComponent } from './project-list-filter-status.component';
-import { ProjectCardComponent } from './project-cart.component';
+import { ProjectCardComponent } from './project-card.component';
 import { ProjectListFilterTypeComponent } from './project-list-filter-type.component';
+import { ProjectPopupEditorComponent } from './project-popup-editor.component';
+import { ProjectService } from '@services/project/project.service';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, 
     ProjectListFilterStatusComponent, ProjectListFilterTypeComponent,
-    ProjectCardComponent],
+    ProjectCardComponent, ProjectPopupEditorComponent],
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.css']
+  styleUrls: ['./project-list.component.css'],
 })
 export class ProjectListComponent {
 
-  projects = input<readonly IProject[]>([]);
+  //project service
+  private service = inject(ProjectService);
+
+  //input
+  readonly = input(false, { transform: booleanAttribute });
+  allowNew = input(true, { transform: booleanAttribute });
+
+  protected newProject = signal<IProject>(new Project());
+
   protected filteredProjects = computed(() => {
     const statusFilter = this.filters.status();
     const typeFilter = this.filters.type();
     return statusFilter.length + typeFilter.length > 0
-      ? this.projects().filter(m => {
+      ? this.service.projects().filter(m => {
         return (statusFilter.length === 0 || statusFilter.includes(m.status)) 
             && (typeFilter.length === 0 || typeFilter.includes(m.type));
       })
-      : this.projects();
+      : this.service.projects();
   })
   protected showFilterUI = signal(false);
 
@@ -65,6 +75,15 @@ export class ProjectListComponent {
     else {
       //reset the filter to empty array
       this.filters[key].set([]);
+    }
+  }
+
+  protected updateProject (project: IProject) {
+    if (this.service.exists(project.id)) {
+      this.service.update(project.id, project);
+    }
+    else {
+      this.service.add(project);
     }
   }
 }

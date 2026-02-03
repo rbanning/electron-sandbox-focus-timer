@@ -7,24 +7,6 @@ import { Nullable } from "../../types/nullable";
 import { primitive } from "../primitive";
 import { format } from "./formatters";
 
-//todo: are we using this??
-export type DateObject = {
-  year?: number; 
-  y?: number; 
-  month?: number;
-  M?: number;
-  day?: number;
-  d?: number;
-  hour?: number;
-  h?: number;
-  minute?: number;
-  m?: number;
-  second?: number;
-  s?: number;
-  millisecond?: number;
-  ms?: number;  
-}
-
 //#region >>> THE METHODS <<<
 
 const now = (): dayjs.Dayjs => {
@@ -35,7 +17,7 @@ const utcFn = (): dayjs.Dayjs => {
   return dayjs.utc();
 };
 
-const isDayJs = (obj: Nullable<dayjs.Dayjs>): boolean => {
+const isDayJs = (obj: Nullable<dayjs.Dayjs>): obj is dayjs.Dayjs => {
   return primitive.isDayJs(obj);
 };
 

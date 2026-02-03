@@ -1,0 +1,103 @@
+<!-- editor button -->
+<button 
+  type="button"
+  (click)="toggle()"
+  class="py-1 px-2 cursor-pointer">
+  <fa-duotone-icon [icon]="isNew() ? icons.new : icons.editor" [size]="iconSize()" />
+  <span class="sr-only">{{isNew() ? 'new' : 'edit'}} project</span>  
+</button>
+
+@if(active()) {
+
+  <div class="overlay"></div>
+  <div class="modal">
+      <!-- header -->
+      <div class="section thin font-bold bg-slate-500 text-slate-50 flex items-center">
+        <span class="flex-1">{{isNew() ? 'New' : 'Edit'}} Project</span>
+        <button 
+          type="button"
+          (click)="cancelEdits()"
+          class="py-1 px-2 cursor-pointer">
+          <fa-duotone-icon [icon]="icons.close" />
+        </button>
+      </div>
+      <!-- body -->
+      <div class="section">
+        <div class="field">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name" name="name"
+            [ngModel]="project().name"
+            (change)="updateProject('name', $any($event.target).value)"
+          />
+        </div>
+        <div class="field">
+          <label for="client">Client:</label>
+          <input
+            type="text"
+            id="client" name="client"
+            placeholder="(internal)"
+            [ngModel]="project().client"
+            (change)="updateProject('client', $any($event.target).value)"
+          />
+        </div>
+        <div class="field">
+          <label for="status">Status:</label>
+          <select
+            type="text"
+            id="status" name="status"
+            [ngModel]="project().status"
+            (change)="updateProject('status', $any($event.target).value)"
+          >
+            <option disabled value="">--- select status ---</option>
+            @for (item of statusOptions; track item) {
+              <option [value]="item">{{item}}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="type">Type:</label>
+          <select
+            type="text"
+            id="type" name="type"
+            [ngModel]="project().type"
+            (change)="updateProject('type', $any($event.target).value)"
+          >
+            <option disabled value="">--- select type ---</option>
+            @for (item of typeOptions; track item) {
+              <option [value]="item">{{item}}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="startDate">Start:</label>
+          <input
+            type="date"
+            id="startDate" name="startDate"
+            placeholder="dd/mm/yyyy"
+            [ngModel]="startDate()"
+            (change)="updateProject('startDate', $any($event.target).value)"
+          />
+        </div>
+      </div>
+      <!-- actions -->
+      <div class="section bg-slate-100">
+        <div class="py-2 flex justify-center gap-2 bg-slate-100">
+          <button 
+            type="button"
+            [disabled]="!hasChanged()"
+            (click)="saveEdits()"
+            class="action action-default">
+            save
+          </button>
+          <button 
+            type="button"
+            (click)="cancelEdits()"
+            class="action">
+            cancel
+          </button>
+        </div>
+      </div>
+  </div>
+}
