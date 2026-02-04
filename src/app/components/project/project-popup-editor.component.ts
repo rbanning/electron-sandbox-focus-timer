@@ -59,6 +59,7 @@ export class ProjectPopupEditorComponent {
   }
 
   updateProject(key: keyof IProject, value: unknown) {  
+    
     this.project.update(current => new Project({
       ...current,
       [key]: value,

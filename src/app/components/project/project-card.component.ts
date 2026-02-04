@@ -5,14 +5,19 @@ import { ProjectStatusComponent } from './project-status.component';
 import { ProjectTypeComponent } from './project-type.component';
 import { ProjectDateComponent } from './project-date.component';
 import { ProjectPopupEditorComponent } from './project-popup-editor.component';
+import { ProjectStatusHorizontalBorderComponent } from './project-status-horizontal-border.component';
+import { ProjectTypeVerticalBorderComponent } from './project-type-vertical-border.component';
 
 @Component({
   selector: 'app-project-card',
   standalone: true,
-  imports: [CommonModule, ProjectStatusComponent, ProjectTypeComponent, ProjectDateComponent, ProjectPopupEditorComponent],
+  imports: [CommonModule, 
+    ProjectStatusComponent, ProjectStatusHorizontalBorderComponent, 
+    ProjectTypeComponent, ProjectTypeVerticalBorderComponent,
+    ProjectDateComponent, ProjectPopupEditorComponent],
   template: `
     @if (isValid()) {
-    <div class="p-2 border border-slate-300 bg-slate-50 rounded-md shadow-md" [attr.data-id]="project().id">
+    <div class="group relative p-2 pl-4 pb-4 border border-slate-300 bg-slate-50 rounded-md shadow-md overflow-hidden" [attr.data-id]="project().id">      
       <div class="flex items-center gap-1">
         <div class="flex-1 font-semibold text-lg text-slate-700">{{project().name}}</div>
         <app-project-status [status]="project().status" />
@@ -28,10 +33,16 @@ import { ProjectPopupEditorComponent } from './project-popup-editor.component';
         <app-project-date [date]="project().startDate" type="start" />
         <app-project-date [date]="project().lastUpdated" type="updated" />
       </div>
+      <app-project-status-horizontal-border [status]="project().status" />
+      <app-project-type-vertical-border [type]="project().type" />
     </div>
     }
   `,
-  styles: ':host { display: block; }'
+  styles: `
+    :host { 
+      display: block; 
+    }
+  `
 })
 export class ProjectCardComponent {
 

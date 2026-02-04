@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, SizeProp } from '@fortawesome/angular-fontawesome';
-import { faBrowser, faChartScatterBubble, faCircle, faCircleCheck, faCircleDot, faCircleExclamation, faCircleMinus, faCircleXmark, faFeather, faGraduationCap, faWebAwesome, faWebhook, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
+import { faChartScatterBubble, faFeather, faGraduationCap, faWebAwesome, faWebhook, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
 import { ProjectType } from '@services/project/project.model';
 
 @Component({

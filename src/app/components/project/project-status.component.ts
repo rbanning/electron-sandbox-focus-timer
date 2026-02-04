@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule, SizeProp } from '@fortawesome/angular-fontawesome';
 import { faCircle, faCircleCheck, faCircleDot, faCircleExclamation, faCircleMinus, faCircleXmark, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
 import { ProjectStatus } from '@services/project/project.model';
+import { projectStatusColorTuple } from './project-status-color-tuple';
 
 @Component({
   selector: 'app-project-status',
@@ -35,13 +36,6 @@ export class ProjectStatusComponent {
     cancelled: faCircleXmark,
   }
 
-  colors: Record<ProjectStatus, [primary: string, secondary: string]> = {
-    pending: ['gray', 'gray'],
-    active: ['gray', 'cornflowerblue'],
-    hold: ['gray', 'peru'],
-    issue: ['gray', 'deeppink'],
-    completed: ['gray', 'yellowgreen'],
-    cancelled: ['gray', 'lightpink'],
-  }
+  colors = projectStatusColorTuple;
 
 }
