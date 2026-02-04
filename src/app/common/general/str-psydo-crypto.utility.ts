@@ -5,7 +5,7 @@ export const pseudoCrypto = {
 
 const MAX_CHAR_CODE = 254;
 
-function encrypt(value: string, key: string) {
+function encrypt(value: string, key: string, verbose?: boolean) {
   try {
     const characters = value.split('');
     return characters.map((ch, index) => {
@@ -13,12 +13,15 @@ function encrypt(value: string, key: string) {
       return String.fromCharCode(code);
     }).join('');
   } catch (error) {
-    console.warn("Error in pseudoCrypto.encrypt()", {error, value});
+    if (verbose) {
+      //only show error if instructed to
+      console.warn("Error in pseudoCrypto.encrypt()", {error, value});
+    }
     return null; //indicating failure
   }
 }
 
-function decrypt(value: string, key: string) {
+function decrypt(value: string, key: string, verbose?: boolean) {
   try {
     const characters = value.split('');
     return characters.map((ch, index) => {
@@ -29,7 +32,10 @@ function decrypt(value: string, key: string) {
       return String.fromCharCode(code);
     }).join('');
   } catch (error) {
-    console.warn("Error in pseudoCrypto.decrypt()", {error, value});
+    if (verbose) {
+      //only show error if instructed to
+      console.warn("Error in pseudoCrypto.decrypt()", {error, value});
+    }
     return null; //indicating failure
   }
 

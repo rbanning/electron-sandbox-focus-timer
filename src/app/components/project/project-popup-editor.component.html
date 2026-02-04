@@ -2,6 +2,7 @@
 <button 
   type="button"
   (click)="toggle()"
+  [title]="`${isNew() ? 'add new' : 'edit'} project`"
   class="py-1 px-2 cursor-pointer">
   <fa-duotone-icon [icon]="isNew() ? icons.new : icons.editor" [size]="iconSize()" />
   <span class="sr-only">{{isNew() ? 'new' : 'edit'}} project</span>  

@@ -53,7 +53,7 @@ const toIsoString = (d: Nullable<dayjs.Dayjs>) => {
   return '';
 }
 
-const compare = (d1: dayjs.Dayjs, d2: dayjs.Dayjs, handleNulls: 'first' | 'last' = 'first'): number => {
+const compare = (d1: Nullable<dayjs.Dayjs>, d2: Nullable<dayjs.Dayjs>, handleNulls: 'first' | 'last' = 'first'): number => {
   if (d1?.isValid() && d2?.isValid()) {
     return d1.isBefore(d2) ? -1 : (d1.isAfter(d2) ? 1 : 0);
   } else {

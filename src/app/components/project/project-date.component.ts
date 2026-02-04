@@ -17,7 +17,7 @@ export type DateType = 'start' | 'updated' | 'unknown';
     <span 
       class="inline-flex items-center gap-1 text-sm text-slate-500 font-mono" 
       [title]="type() + ' date'"
-      [attr.data-date-value]="date()?.toISOString()"
+      [attr.data-date-value]="isValid() ? date()?.toISOString() : ''"
       [attr.data-date-type]="type()"
     >
       <fa-duotone-icon [icon]="icons[type()]" />

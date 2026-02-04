@@ -2,21 +2,23 @@ import { castAs } from '@common/types';
 import { booleanAttribute, Component, computed, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFilters } from '@fortawesome/pro-duotone-svg-icons';
+import { faArrowDownWideShort, faArrowUpShortWide, faFilters, faSort } from '@fortawesome/pro-duotone-svg-icons';
 
-import { arrayHelp, strHelp } from '@common/general';
+import { arrayHelp, objHelp, strHelp } from '@common/general';
 import { IProject, Project, ProjectStatus, projectStatusList, ProjectType, projectTypeList } from '@services/project/project.model';
 import { ProjectListFilterStatusComponent } from './project-list-filter-status.component';
 import { ProjectCardComponent } from './project-card.component';
 import { ProjectListFilterTypeComponent } from './project-list-filter-type.component';
 import { ProjectPopupEditorComponent } from './project-popup-editor.component';
-import { ProjectService } from '@services/project/project.service';
+import { ProjectService, SortInfo } from '@services/project/project.service';
+import { ProjectListSortSelectorComponent } from './project-list-sort-selector.component';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule, 
-    ProjectListFilterStatusComponent, ProjectListFilterTypeComponent,
+    ProjectListFilterStatusComponent, ProjectListFilterTypeComponent, 
+    ProjectListSortSelectorComponent,
     ProjectCardComponent, ProjectPopupEditorComponent],
   templateUrl: './project-list.component.html',
   styleUrls: ['./project-list.component.css'],
@@ -50,8 +52,12 @@ export class ProjectListComponent {
   }
   protected filterCount = computed(() => this.filters.status().length + this.filters.type().length);
 
-  icons = {
-    filters: faFilters 
+  protected showSortUI = signal(false);
+  protected currentSort = this.service.sortInfo;
+
+  protected icons = {
+    filters: faFilters,
+    sort: faSort,
   }
 
   //methods
@@ -78,7 +84,18 @@ export class ProjectListComponent {
     }
   }
 
+
+  protected toggleSortUI() {
+    this.showSortUI.update(v => !v);
+  }
+
+  protected updateSort(sort: SortInfo) {
+    this.service.sort(sort);
+  }
+
+
   protected updateProject (project: IProject) {
+    console.log('DEBUG: updateProject (list)', project);
     if (this.service.exists(project.id)) {
       this.service.update(project.id, project);
     }

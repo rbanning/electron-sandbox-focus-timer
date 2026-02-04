@@ -4,31 +4,30 @@
 
   <div class="my-8 w-full h-1 bg-slate-200"></div>
 
-  <h3 class="">Status + Types</h3>
-  <div class="grid grid-cols-3 gap-2">
-    @for (size of sizeList(); track size) {
-      <div>
-        @for (status of statusList(); track status) {
-          <div class="flex items-center gap-2">
-            <app-project-status [status]="status" [size]="size" />
-            <span>{{status}}</span>
-          </div>
-        }
-      </div>
-    }
-    @for (size of sizeList(); track size) {
-      <div>
-        @for (type of typeList(); track type) {
-          <div class="flex items-center gap-2">
-            <app-project-type [type]="type" [size]="size" />
-            <span>{{type}}</span>
-          </div>
-        }
-      </div>
-    }
+  <div class="flex justify-end gap-4">
+    <button 
+      type="button"
+      (click)="seed(2)"
+      class="py-1 px-2 border border-slate-600 rounded-md cursor-pointer"
+    >
+      Seed Projects (2)
+    </button>
+    <button 
+      type="button"
+      (click)="seed(5)"
+      class="py-1 px-2 border border-slate-600 rounded-md cursor-pointer"
+    >
+      Seed Projects (5)
+    </button>
+    <button 
+      type="button"
+      (click)="seed()"
+      class="py-1 px-2 border border-slate-600 rounded-md cursor-pointer"
+    >
+      Seed Projects (all)
+    </button>
   </div>
+  <app-project-list />
 
   
-  <app-project-list class="mt-8" />
-
 </div>

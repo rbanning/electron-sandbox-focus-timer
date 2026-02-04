@@ -67,8 +67,8 @@ export class ProjectPopupEditorComponent {
   }
 
   saveEdits() {
+    console.log('DEBUG: saveEdits (editor)', this.project());
     this.save.emit(this.project());
-    console.log('DEBUG: saveEdits', this.project());
     this.toggle();
   }
   

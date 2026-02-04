@@ -37,11 +37,12 @@ export class ProjectCardComponent {
 
   project = input.required<IProject>(); 
   readonly = input(false);
-  change = output<IProject>();
+  save = output<IProject>();
 
   protected isValid = computed(() => Project.isProject(this.project()));
 
   saveEdits (project: IProject) {
-    this.change.emit(project); //pass to parent;
+    console.log('DEBUG: change (card)', project);    
+    this.save.emit(project); //pass to parent;
   }
 }

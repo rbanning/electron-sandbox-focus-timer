@@ -8,12 +8,19 @@
     />
     <span class="sr-only">filter list</span>
   </button>
+  <button type="button" class="cursor-pointer" (click)="toggleSortUI()">
+    <fa-duotone-icon 
+      [icon]="icons.sort" 
+      size="sm"
+    />
+    <span class="sr-only">sort list</span>
+  </button>
 </h2>
 
 @if(showFilterUI()) {
   <div class="p-4 mt-2 border border-slate-400 rounded space-y-2">
     <div class="flex flex-wrap items-center gap-4">
-      <span>Status:</span>
+      <span>Sort By:</span>
       <app-project-list-filter-status (filterUpdated)="updateFilter('status', $event)" />
     </div>
     <div class="flex flex-wrap items-center gap-4">
@@ -22,17 +29,23 @@
     </div>
   </div>
 }
+@if(showSortUI()) {
+  <div class="p-4 mt-2 border border-slate-400 rounded space-y-2">
+    <div class="font-bold">Sort By...</div>
+    <app-project-list-sort-selector [key]="currentSort().key" [direction]="currentSort().direction" (save)="updateSort($event)" />
+  </div>
+}
 
 <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-    @for (project of filteredProjects(); track project) {
-      <app-project-card [project]="project" />
+    @for (project of filteredProjects(); track project.id) {
+      <app-project-card [project]="project" (save)="updateProject($event)" />
     }
 </div>
 
 @if(allowNew()) {
   <div class="fixed bottom-12 left-0 w-full z-20">
     <div class="view-area flex justify-end">      
-      <app-project-popup-editor [project]="newProject()" isNew iconSize="3x"/>
+      <app-project-popup-editor [project]="newProject()" isNew iconSize="3x" (save)="updateProject($event)"/>
     </div>
   </div>
 }
