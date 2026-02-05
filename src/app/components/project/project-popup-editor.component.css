@@ -17,7 +17,7 @@
   }
 
   label { 
-    @apply font-semibold text-slate-500;
+    @apply font-semibold text-slate-500 text-right;
     &:has(+ [required]) {
       &::after {
         @apply pl-1 text-red-300 content-['*'];
@@ -28,16 +28,14 @@
     }
   }
   input, .input, select, .select {
-    @apply py-1 px-1 focus:px-2
+    @apply py-1 px-2
       bg-slate-50 text-slate-800 
       focus:bg-white focus:text-black
       border border-white border-b-slate-400 rounded-md
-      focus:border focus:border-slate-800
-      focus:ring-0
       invalid:border-b-red-500 invalid:bg-red-100;
   }
   .field {
-    @apply my-2 flex items-center gap-2;
+    @apply my-2 grid grid-cols-3 items-center gap-x-3;  /* add flex-wrap so errors will wrap to next line */
   }
   .action {
     @apply py-2 px-4 bg-slate-200 font-bold rounded-lg cursor-pointer 

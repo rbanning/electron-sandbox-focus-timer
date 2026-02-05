@@ -1,6 +1,5 @@
 import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { timeFormatter } from './time-formatter';
 
 @Component({
   selector: 'app-timer-ring',
@@ -12,12 +11,9 @@ import { timeFormatter } from './time-formatter';
 export class TimerRingComponent {
 
   //inputs
-  remaining = input<number>(0); //seconds
-  percent = input<number>(0);
-
-  //computed
-  formattedRemaining = computed(() => timeFormatter.remaining(this.remaining()));
-  roundedPercent = computed(() => timeFormatter.percent(this.percent()));
+  formattedRemaining = input<string>('');  //formatted time remaining
+  roundedPercent = input<string>('');     //formatted remaining percent
+  percent = input<number>(0);     
   
   // SVG circle circumference (radius = 50, so C = 2πr ≈ 314.16)
   circumference = 314.16;

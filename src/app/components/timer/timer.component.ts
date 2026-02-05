@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { faPause, faPlay, faStop, faPowerOff } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -22,7 +22,7 @@ import { TimerPopupEditorComponent } from './timer-popup-editor.component';
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.css']
 })
-export class TimerComponent implements OnDestroy {
+export class TimerComponent {
 
   protected capitalize = strHelp.capitalize;
 
@@ -35,9 +35,5 @@ export class TimerComponent implements OnDestroy {
 
   //timer service
   protected readonly timer = inject(TimerService);
-
-  ngOnDestroy(): void {
-    this.timer.reset();
-  }
   
 }

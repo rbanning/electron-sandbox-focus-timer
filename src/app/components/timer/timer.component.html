@@ -5,15 +5,15 @@
 <div class="flex justify-center">
     @switch (timer.view()) {
       @case ('ring') {
-        <app-timer-ring [remaining]="timer.remaining()" [percent]="timer.percent()" />
+        <app-timer-ring [formattedRemaining]="timer.formattedRemaining()" [percent]="timer.percent()" [roundedPercent]="timer.roundedPercent()" />
       }
       @case ('bar') {
         <div class="flex-1">
-          <app-timer-bar [remaining]="timer.remaining()" [percent]="timer.percent()" />
+          <app-timer-bar [formattedRemaining]="timer.formattedRemaining()" [percent]="timer.percent()" [roundedPercent]="timer.roundedPercent()" />
         </div>
       }
       @case ('fill') {
-        <app-timer-fill [remaining]="timer.remaining()" [percent]="timer.percent()" />
+        <app-timer-fill [formattedRemaining]="timer.formattedRemaining()" [percent]="timer.percent()" [roundedPercent]="timer.roundedPercent()" />
       }
     }
 </div>

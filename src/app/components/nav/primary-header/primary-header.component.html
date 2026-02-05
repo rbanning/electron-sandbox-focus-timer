@@ -18,11 +18,20 @@
 @if (active()) {
   <div class="fixed top-12 left-0 w-full z-10" (click)="toggle()">
     <div class="view-area flex">
-      <nav class="bg-slate-700 text-slate-100 p-4 flex flex-col justify-center items-center gap-4">
-        <a [routerLink]="['/about']" class="hover:text-white">About</a>
-        <a [routerLink]="['/help']" class="hover:text-white">Help</a>
-        <div class="w-full h-1 bg-slate-400"></div>
-        <a [routerLink]="['/test']" class="hover:text-white">Test</a>
+      <nav class="bg-slate-700 text-slate-100 py-4 rounded overflow-hidden">
+        @for (item of primaryMenu(); track item.path) {
+          <a [routerLink]="item.path">
+            <fa-duotone-icon [icon]="item.icon" />
+            <span>{{item.title}}</span>
+          </a>
+        }
+        <div class="my-2 w-full h-1 bg-slate-400"></div>
+        @for (item of secondaryMenu(); track item.path) {
+          <a [routerLink]="item.path">
+            <fa-duotone-icon [icon]="item.icon" />
+            <span>{{item.title}}</span>
+          </a>
+        }
       </nav>
     </div>
   </div>

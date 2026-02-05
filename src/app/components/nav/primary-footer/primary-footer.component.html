@@ -2,5 +2,14 @@
   <nav class="flex items-center justify-center gap-8">
     <span class="">&copy;{{date()}} {{copyright()}}</span>
     <span class="text-xs">v{{version()}}</span>
+    <span class="inline-flex items-center gap-1">
+      <span>Timer:</span>
+      @if (timer.state() === 'running') {
+        <span>{{timer.formattedRemaining()}}</span>
+      }
+      @else {
+        <span>{{timer.state()}}</span>
+      }
+    </span>
   </nav>
 </header>

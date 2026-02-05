@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TimerService } from '@services/timer/timer.service';
 import { TimerUnit, timerUnits } from '@services/timer/timer-unit.type';
 import { exhaustiveCheck } from '@common/misc';
-import { faPencilAlt as editIcon, faXmark as closeIcon } from '@fortawesome/pro-duotone-svg-icons';
+import { faGear as editIcon, faXmark as closeIcon } from '@fortawesome/pro-duotone-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { parsers, primitive, strHelp } from '@common/general';
 import { TimerView, timerViews } from '@services/timer/timer-view.type';

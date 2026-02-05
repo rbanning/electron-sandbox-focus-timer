@@ -2,7 +2,8 @@
 <button 
   type="button"
   (click)="toggle()"
-  class="py-1 px-2 cursor-pointer">
+  [disabled]="timer.state() === 'running'"
+  class="py-1 px-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
   <fa-duotone-icon [icon]="icons.edit" />
   <span class="sr-only">edit timer</span>  
 </button>

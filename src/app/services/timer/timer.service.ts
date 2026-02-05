@@ -10,6 +10,7 @@ import { timeToSeconds } from './time-to-seconds';
 import { TimerState } from './timer-state.type';
 import { TimerView, timerViews } from './timer-view.type';
 import { isTimerStore, TimerStore } from './timer-store.type';
+import { timeFormatter } from './time-formatter';
 
 
 @Injectable({
@@ -40,6 +41,9 @@ export class TimerService {
   public readonly remaining = computed(() => this._remaining());
   public readonly percent = computed(() => this._percent());
   public readonly view = computed(() => this._view());
+
+  public readonly formattedRemaining = computed(() => timeFormatter.remaining(this.remaining()));
+  public readonly roundedPercent = computed(() => timeFormatter.percent(this.percent()));
 
   constructor() {  
     const current = this.storage.get<TimerStore>(this.KEY);

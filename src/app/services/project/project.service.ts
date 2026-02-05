@@ -46,6 +46,7 @@ export class ProjectService {
   }
 
   update(projectId: string, changes: Partial<IProject>) {
+    changes.lastUpdated = dayjsHelp.now(); //update the last update timestamp
     this._projects.update(items => items.map(item => {
       if (item.id === projectId) {
         return {...item, ...changes};

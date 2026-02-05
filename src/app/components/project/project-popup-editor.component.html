@@ -26,70 +26,62 @@
       <form class="section">
         <div class="field">
           <label for="name" [class.dirty]="projectForm.name().dirty()">Name:</label>
-          <span>
-            <input
-              type="text"
-              id="name"
-              [formField]="projectForm.name"
-            />
-            <app-input-error-message [state]="projectForm.name()" />
-          </span>
+          <input
+            type="text"
+            id="name"
+            [formField]="projectForm.name"
+          />
+          <app-input-error-message [state]="projectForm.name()" />
         </div>
         <div class="field">
-          <span>
-            <label for="client" [class.dirty]="projectForm.client().dirty()">Client:</label>
-            <input
-              type="text"
-              id="client"
-              placeholder="(internal)"
-              [formField]="projectForm.client"
-            />
-            <app-input-error-message [state]="projectForm.client()" />
-          </span>
+          <label for="client" [class.dirty]="projectForm.client().dirty()">Client:</label>
+          <input
+            type="text"
+            id="client"
+            placeholder="(internal)"
+            [formField]="projectForm.client"
+          />
+          <app-input-error-message [state]="projectForm.client()" />
         </div>
         <div class="field">
-          <span>
-            <label for="status" [class.dirty]="projectForm.status().dirty()">Status:</label>
-            <select
-              type="text"
-              id="status"
-              [formField]="projectForm.status"
-            >
-              <option disabled value="">--- select status ---</option>
-              @for (item of statusOptions; track item) {
-                <option [value]="item">{{item}}</option>
-              }
-            </select>
-            <app-input-error-message [state]="projectForm.status()" />
-          </span>
+          <label for="status" [class.dirty]="projectForm.status().dirty()">Status:</label>
+          <select
+            type="text"
+            id="status"
+            [formField]="projectForm.status"
+          >
+            <option disabled value="">--- select status ---</option>
+            @for (item of statusOptions; track item) {
+              <option [value]="item">{{item}}</option>
+            }
+          </select>
+          <app-input-error-message [state]="projectForm.status()" />
         </div>
         <div class="field">
-          <span>
-            <label for="type" [class.dirty]="projectForm.type().dirty()">Type:</label>
-            <select
-              type="text"
-              id="type"
-              [formField]="projectForm.type"
-            >
-              <option disabled value="">--- select type ---</option>
-              @for (item of typeOptions; track item) {
-                <option [value]="item">{{item}}</option>
-              }
-            </select>
-            <app-input-error-message [state]="projectForm.type()" />
-          </span>
+          <label for="type" [class.dirty]="projectForm.type().dirty()">Type:</label>
+          <select
+            type="text"
+            id="type"
+            [formField]="projectForm.type"
+          >
+            <option disabled value="">--- select type ---</option>
+            @for (item of typeOptions; track item) {
+              <option [value]="item">{{item}}</option>
+            }
+          </select>
+          <app-input-error-message [state]="projectForm.type()" />
         </div>
         <div class="field">
-          <span>
-            <label for="startDate" [class.dirty]="projectForm.startDate().dirty()">Start:</label>
-            <input
-              type="date"
-              id="startDate"
-              placeholder="dd/mm/yyyy"
-              [formField]="projectForm.startDate"
-            />
-            <app-input-error-message [state]="projectForm.startDate()" />
-          </span>
+          <label for="startDate" [class.dirty]="projectForm.startDate().dirty()">Start:</label>
+          <input
+            type="date"
+            id="startDate"
+            placeholder="dd/mm/yyyy"
+            [formField]="projectForm.startDate"
+          />
+          <app-input-error-message [state]="projectForm.startDate()">
+            <span class="text-right text-sm">error</span>
+          </app-input-error-message>
         </div>
       </form>
       <!-- actions -->

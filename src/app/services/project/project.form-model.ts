@@ -1,6 +1,6 @@
 import { required, schema, validate } from '@angular/forms/signals';
 import { dayjsHelp, objHelp, parsers } from '@common/general';
-import { IProject, Project } from './project.model';
+import { IProject, Project, projectStatusList } from './project.model';
 
 
 /**
@@ -30,6 +30,15 @@ export const projectFormModelSchema = schema<IProjectFormModel>((path) => {
   //required
   objHelp.asKeysOf<IProjectFormModel>(defaultIProjectFormModel, 'id','name','status','type')
     .forEach(key => required(path[key as keyof IProjectFormModel], { message: `${String(key)} is required`}));
+
+  //conditional required
+  required(path.startDate, {
+    message: 'Required',
+    when: ({valueOf}) => {
+      const status = parsers.toStringUnionType(valueOf(path.status), projectStatusList);
+      return status !== 'pending' && status !== 'cancelled';
+    }
+  })
 
   //date (min && max)
   const dateYear = { min: 2000, max: new Date().getFullYear() + 1 };
@@ -74,6 +83,32 @@ export const projectFormModelSchema = schema<IProjectFormModel>((path) => {
       //else
       return null;
     }));
+
+  // CROSS-FIELD VALIDATION
+
+  // the start date is dependent on the status field...
+  //  when status is 'pending' - the startDate must be empty
+  //  when status is NOT 'pending' or 'cancelled', the startDate is required  
+
+  validate(path.startDate, (context) => {
+    const startDate = parsers.toDayjs(context.value());
+    const status = parsers.toStringUnionType(context.valueOf(path.status), projectStatusList);
+    if (status === 'pending' && dayjsHelp.isDayJs(startDate)) {
+      return {
+        kind: 'should-be-empty',
+        message: `${context.key()} should be empty when status is '${status}'`
+      };
+    }
+    //note: duplicate of the required.when added earlier
+    else if (status !== 'pending' && status !== 'cancelled' && !dayjsHelp.isDayJs(startDate)) {
+      return {
+        kind: 'should-not-be-empty',
+        message: `${context.key()} is required when status is '${status}'`
+      };
+    }
+    //else
+    return null;
+  });
 
 })
 
