@@ -32,6 +32,8 @@ export interface IProject {
   lastUpdated: Nullable<dayjs.Dayjs>;
 }
 
+
+/// ---- PROJECT CLASS ----
 export class Project {
 
   public static readonly INTERNAL_CLIENT = "(internal)";
@@ -66,3 +68,4 @@ export class Project {
   }
 
 }
+

@@ -23,71 +23,81 @@
         </button>
       </div>
       <!-- body -->
-      <div class="section">
+      <form class="section">
         <div class="field">
-          <label for="name">Name:</label>
-          <input
-            type="text"
-            id="name" name="name"
-            [ngModel]="project().name"
-            (change)="updateProject('name', $any($event.target).value)"
-          />
+          <label for="name" [class.dirty]="projectForm.name().dirty()">Name:</label>
+          <span>
+            <input
+              type="text"
+              id="name"
+              [formField]="projectForm.name"
+            />
+            <app-input-error-message [state]="projectForm.name()" />
+          </span>
         </div>
         <div class="field">
-          <label for="client">Client:</label>
-          <input
-            type="text"
-            id="client" name="client"
-            placeholder="(internal)"
-            [ngModel]="project().client"
-            (change)="updateProject('client', $any($event.target).value)"
-          />
+          <span>
+            <label for="client" [class.dirty]="projectForm.client().dirty()">Client:</label>
+            <input
+              type="text"
+              id="client"
+              placeholder="(internal)"
+              [formField]="projectForm.client"
+            />
+            <app-input-error-message [state]="projectForm.client()" />
+          </span>
         </div>
         <div class="field">
-          <label for="status">Status:</label>
-          <select
-            type="text"
-            id="status" name="status"
-            [ngModel]="project().status"
-            (change)="updateProject('status', $any($event.target).value)"
-          >
-            <option disabled value="">--- select status ---</option>
-            @for (item of statusOptions; track item) {
-              <option [value]="item">{{item}}</option>
-            }
-          </select>
+          <span>
+            <label for="status" [class.dirty]="projectForm.status().dirty()">Status:</label>
+            <select
+              type="text"
+              id="status"
+              [formField]="projectForm.status"
+            >
+              <option disabled value="">--- select status ---</option>
+              @for (item of statusOptions; track item) {
+                <option [value]="item">{{item}}</option>
+              }
+            </select>
+            <app-input-error-message [state]="projectForm.status()" />
+          </span>
         </div>
         <div class="field">
-          <label for="type">Type:</label>
-          <select
-            type="text"
-            id="type" name="type"
-            [ngModel]="project().type"
-            (change)="updateProject('type', $any($event.target).value)"
-          >
-            <option disabled value="">--- select type ---</option>
-            @for (item of typeOptions; track item) {
-              <option [value]="item">{{item}}</option>
-            }
-          </select>
+          <span>
+            <label for="type" [class.dirty]="projectForm.type().dirty()">Type:</label>
+            <select
+              type="text"
+              id="type"
+              [formField]="projectForm.type"
+            >
+              <option disabled value="">--- select type ---</option>
+              @for (item of typeOptions; track item) {
+                <option [value]="item">{{item}}</option>
+              }
+            </select>
+            <app-input-error-message [state]="projectForm.type()" />
+          </span>
         </div>
         <div class="field">
-          <label for="startDate">Start:</label>
-          <input
-            type="date"
-            id="startDate" name="startDate"
-            placeholder="dd/mm/yyyy"
-            [ngModel]="startDate()"
-            (change)="updateProject('startDate', $any($event.target).value)"
-          />
+          <span>
+            <label for="startDate" [class.dirty]="projectForm.startDate().dirty()">Start:</label>
+            <input
+              type="date"
+              id="startDate"
+              placeholder="dd/mm/yyyy"
+              [formField]="projectForm.startDate"
+            />
+            <app-input-error-message [state]="projectForm.startDate()" />
+          </span>
         </div>
-      </div>
+      </form>
       <!-- actions -->
       <div class="section bg-slate-100">
         <div class="py-2 flex justify-center gap-2 bg-slate-100">
           <button 
             type="button"
-            [disabled]="!hasChanged()"
+            [disabled]="!projectForm().dirty() || projectForm().invalid()"
             (click)="saveEdits()"
             class="action action-default">
             save

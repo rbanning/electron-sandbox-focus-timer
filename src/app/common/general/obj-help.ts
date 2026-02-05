@@ -12,6 +12,7 @@ export const objHelp = {
   toTypedObject,
   omitProps,
   keysOf,
+  asKeysOf,
   hasKeys,
   hasProps,
 } as const;
@@ -67,8 +68,13 @@ function omitProps<T extends object = object>(value: T, ...keys: (keyof T)[]) {
   return obj;
 }
 
-function keysOf<T extends object = object>(obj: T): (keyof T)[] {
-  return castAs<(keyof T)[]>(Object.keys(obj));
+function keysOf<T extends object = object>(obj: T, omit?: (keyof T)[]): (keyof T)[] {
+  return castAs<(keyof T)[]>(Object.keys(obj))
+    .filter(key => !omit || !omit.includes(key)); //remove any keys in the omit array
+}
+function asKeysOf<T extends object = object>(obj: T, ...keys: string[]): (keyof T)[] {
+  return keysOf<T>(obj)
+    .filter(key => keys.includes(String(key)));
 }
 
 function isAnyObject(value: unknown): value is object { return typeof(value) === 'object' }

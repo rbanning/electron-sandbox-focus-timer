@@ -115,7 +115,7 @@ export class ProjectService {
     if (Array.isArray(result) && result.length > 0) {
       //validate integrity of the array by examining the first project
       if (Project.isProject(result[0])) {
-        projects = result;
+        projects = result.map(m => new Project(m));
       }
     }
     this._projects.set(projects);

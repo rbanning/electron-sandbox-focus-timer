@@ -1,16 +1,18 @@
-import { booleanAttribute, Component, computed, effect, EventEmitter, input, output, Output, signal } from '@angular/core';
+import { booleanAttribute, Component, effect, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FormField, form } from '@angular/forms/signals'; // !! EXPERIMENTAL
 import { FontAwesomeModule, SizeProp } from '@fortawesome/angular-fontawesome';
 import { faPencilAlt, faPlusCircle, faXmark } from '@fortawesome/pro-duotone-svg-icons';
 
-import { dayjsHelp, objHelp } from '@common/general';
 import { IProject, Project, projectStatusList, projectTypeList } from '@services/project/project.model';
+import { IProjectFormModel, projectFormModelSchema, toIProjectFormModel } from '@services/project/project.form-model';
+import { InputErrorMessageComponent } from '@components/input/input-error-message.component';
 
 @Component({
   selector: 'app-project-popup-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, FontAwesomeModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule, FormField, InputErrorMessageComponent],
   templateUrl: './project-popup-editor.component.html',
   styleUrl: './project-popup-editor.component.css',
 })
@@ -27,9 +29,10 @@ export class ProjectPopupEditorComponent {
   save = output<IProject>();
 
   //writable person signal for tracking changes
-  protected readonly project = signal<IProject>(new Project()); 
-  protected readonly hasChanged = computed(() => !objHelp.deepEqual(this.projectOriginal(), this.project()))
-  protected readonly startDate = computed(() => dayjsHelp.format.asInput(this.project().startDate)); //used to bind to input
+  protected readonly projectModel = signal<IProjectFormModel>(toIProjectFormModel(new Project())); 
+
+  //form for binding model to input elements
+  protected projectForm = form(this.projectModel, projectFormModelSchema);
 
   //state
   protected readonly active = signal<boolean>(false);
@@ -47,7 +50,7 @@ export class ProjectPopupEditorComponent {
 
   constructor() {
     effect(() => {
-      this.project.set(new Project(this.projectOriginal()));
+      this.projectModel.set(toIProjectFormModel(this.projectOriginal()));
     })
   }
 
@@ -58,23 +61,16 @@ export class ProjectPopupEditorComponent {
     this.active.update(v => !v);
   }
 
-  updateProject(key: keyof IProject, value: unknown) {  
-    
-    this.project.update(current => new Project({
-      ...current,
-      [key]: value,
-      lastUpdated: dayjsHelp.now(), //update on any edit
-    }));
-  }
-
   saveEdits() {
-    console.log('DEBUG: saveEdits (editor)', this.project());
-    this.save.emit(this.project());
+    console.log('DEBUG: saveEdits (editor)', this.projectModel());
+    this.save.emit(new Project(this.projectModel()));
+    this.projectForm().reset(); //reset the form's state
     this.toggle();
   }
   
   cancelEdits() {
-    this.project.set(new Project(this.projectOriginal()));
+    this.projectModel.set(toIProjectFormModel(this.projectOriginal())); //reset - clear any edits
+    this.projectForm().reset(); //reset the form's state
     this.toggle();
   }
 }
