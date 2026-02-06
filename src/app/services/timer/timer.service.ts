@@ -1,5 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Nullable } from '@common/types';
+import { Title } from '@angular/platform-browser';
+
 import { primitive, strHelp } from '@common/general';
 import { StorageService } from '@services/storage/storage.service';
 import { AlarmService } from '@services/alarm/alarm.service';
@@ -13,15 +15,24 @@ import { isTimerStore, TimerStore } from './timer-store.type';
 import { timeFormatter } from './time-formatter';
 
 
+export type TimerServiceConfig = {
+  showTimerInTitle: boolean;
+}
+const defaultTimerServiceConfig: TimerServiceConfig = {
+  showTimerInTitle: true,
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
   //constants
   private readonly KEY = "hallpass-timer"; //storage key;
+  private readonly CONFIG_KEY = "hallpass-timer-config"; //storage key;
   private readonly DELAY = 0.1; //seconds;
 
   //private (internal) properties
+  private readonly _config = signal<TimerServiceConfig>(defaultTimerServiceConfig);
   private readonly _state = signal<TimerState>('idle');
   private readonly _time = signal<TimeObject>({value: 0, unit: 'second'});  //updated in constructor
   private readonly _remaining = signal(0);
@@ -30,9 +41,10 @@ export class TimerService {
 
   private _intervalId: Nullable<number>;
 
-  //inject alarm and storage service
+  //inject alarm, storage, and title services
   private readonly alarm = inject(AlarmService);
   private readonly storage = inject(StorageService);
+  private readonly title = inject(Title);
 
   //public readonly properties
   public readonly state = computed(() => this._state());
@@ -73,9 +85,11 @@ export class TimerService {
   public start() {    
     this._intervalId = window.setInterval(() => {
       this._update(this._remaining() - this.DELAY);
+      this._refresh();
     }, this.DELAY * 1000);
     this._state.set('running');
-    this.alarm.soundAlarm('short');
+    this.alarm.soundAlarm('short');    
+    this._refresh();
   }
 
   public stop() {
@@ -84,6 +98,7 @@ export class TimerService {
     this._percent.set(100);
     this._clearInterval();
     this.alarm.soundAlarm('double');
+    this._refresh();
   }
 
   public reset() {
@@ -91,15 +106,21 @@ export class TimerService {
     this._remaining.set(this.totalSeconds());
     this._percent.set(0);
     this._clearInterval();
+    this._refresh();
   }
 
   public pause() {
     this._state.set(this._remaining() > 0 ? 'paused' : 'completed');
     this._clearInterval();
+    this._refresh();
   }
 
+  updateConfig(config: Partial<TimerServiceConfig>) {
+    this._config.update(current => ({...current, config}));
+  }
 
   //private methods
+
 
   private _update(remaining: number) {
     if (remaining > 0) {
@@ -159,5 +180,27 @@ export class TimerService {
     }
   }
 
+  //  refresh
+  private _refresh() {
+    this._refreshTitle(this._config().showTimerInTitle);
+  }
+
+  private _refreshTitle(show: boolean) {
+    let current = this.title.getTitle().replace(/\[.*?\]/, '').trim(); //current title minus any timer data
+    if (show) { 
+      switch(this._state()) {
+        case 'running':
+          current = `[${this.formattedRemaining()}] ${current}`;
+          break;
+        case 'paused':
+          current = `[◉ ${this.formattedRemaining()}] ${current}`;
+          break;
+        case 'completed':
+          current = `[✓] ${current}`;
+          break;
+      }        
+    }    
+    this.title.setTitle(current);
+  }
   
 }
