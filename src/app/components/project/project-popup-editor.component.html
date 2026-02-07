@@ -1,12 +1,17 @@
-<!-- editor button -->
-<button 
-  type="button"
-  (click)="toggle()"
-  [title]="`${isNew() ? 'add new' : 'edit'} project`"
-  class="py-1 px-2 cursor-pointer">
-  <fa-duotone-icon [icon]="isNew() ? icons.new : icons.editor" [size]="iconSize()" />
-  <span class="sr-only">{{isNew() ? 'new' : 'edit'}} project</span>  
-</button>
+<!-- menu button -->
+@if (isNew()) {
+  <button 
+    type="button"
+    (click)="toggle()"
+    title="new project"
+    class="py-1 px-2 cursor-pointer">
+    <fa-duotone-icon [icon]="icons.new" [size]="iconSize()" />
+    <span class="sr-only">add new project</span>  
+  </button>
+} 
+@else {
+  <app-project-card-menu [status]="projectModel().status" (activate)="btnActivate($event)" />
+}
 
 @if(active()) {
 

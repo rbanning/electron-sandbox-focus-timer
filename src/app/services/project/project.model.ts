@@ -66,6 +66,5 @@ export class Project {
     //else
     return false;
   }
-
 }
 
