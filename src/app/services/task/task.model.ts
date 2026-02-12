@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { castAs, Nullable } from "@common/types";
 import { IProject, Project, projectStatusList } from "@services/project/project.model";
-import { dayjsHelp, parsers, primitive } from "@common/general";
+import { dayjsHelp, parsers, primitive, strHelp } from "@common/general";
 import { using } from "@common/misc";
 import { ProjectService } from "@services/project/project.service";
 
@@ -17,8 +17,11 @@ export const taskTypeDictionary = {
     'sales',
     'proposals',              // RFPs, estimates, scoping
     'client relations',
+    'teaching',               // includes workshops, mentoring, and blogging
+    'professional development',  // catch all for professional development and personal enrichment 
   ],
   'client deliverable': [
+    'research',               // Research associated with specific client project
     'design',                 // UI/UX, architecture, requirements
     'coding',                 // coding/implementation
     'data management',        // designing, gathering, cleaning, maintaining
@@ -30,7 +33,7 @@ export const taskTypeDictionary = {
   'admin': [
     'finances',
     'legal',
-    'operations',             // planning, team mgmt
+    'operations',             // planning, team management
   ]
 } as const;
 export type TaskTypeGroup = keyof typeof taskTypeDictionary;
@@ -57,7 +60,7 @@ export interface ITask {
 
 
 export class Task implements ITask {
-  id: string = "";
+  id: string = strHelp.randomString(12);
   name: string = "";
   status: TaskStatus = "pending";
   type: TaskType = "operations";
@@ -107,4 +110,14 @@ export class Task implements ITask {
 
     return clone;
   }
+
+  public static isTask(obj?: unknown): obj is ITask {
+    if (primitive.isObject(obj)) {
+      //check for these (non-empty string) properties
+      return ['id', 'name', 'status', 'type'].every(key => (key in obj) && primitive.isString(obj[key]) && obj[key].length > 0);
+    }
+    //else
+    return false;
+  }
+
 }
