@@ -30,13 +30,26 @@
   </div>
 }
 
-<div [class]="`mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`">
+<div class="boundary mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
   @for (status of statusList(); track status) {
-    <div class="column">
+    <div 
+      class="column" 
+      [attr.data-status]="status" 
+      cdkDropList
+      [cdkDropListData]="status"
+      [id]="status+'List'"
+      [cdkDropListConnectedTo]="activeStatusList()[status] ?? []"      
+      (cdkDropListDropped)="drop($event)">
       <app-task-kanban-col-heading [status]="status" [count]="filteredTasks()[status]?.length ?? 0" />
       <div class="py-4">
         @for (task of filteredTasks()[status]; track task.id) {
-          <app-task-card [task]="task" (save)="updateTask($event)" class="my-4" />
+          <app-task-card 
+            [task]="task" 
+            (save)="updateTask($event)" 
+            class="my-4" 
+            cdkDrag [cdkDragData]="task"
+            cdkDragBoundary=".boundary"
+            [attr.data-task-id]="task.id" />
         }
       </div>
     </div>
