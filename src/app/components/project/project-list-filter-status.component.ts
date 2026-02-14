@@ -8,7 +8,7 @@ import { ProjectStatusComponent } from './project-status.component';
   standalone: true,
   imports: [CommonModule, ProjectStatusComponent],
   template: `
-<div class="flex flex-wrap gap-2">
+  <span class="label">Status:</span>
   <button type="button" [disabled]="items().length === 0" (click)="reset()" class="btn sm mr-2">
     reset
   </button>
@@ -17,28 +17,8 @@ import { ProjectStatusComponent } from './project-status.component';
       <app-project-status [status]="item" size="1x" />
     </button>
   }
-</div>
   `,
-  styles: `
-:host { 
-  display: block; 
-  .btn {
-    border: solid 1px gray;
-    padding: 0.1rem 0.7rem;
-    border-radius: 1rem;
-    background-color: white;
-    &.active {
-      border: solid 2px black;
-      background-color: rgba(200,200,250,0.3);
-    }
-    &.sm {
-      padding: 1px 3px;
-      font-size: 0.8rem;
-      border-radius: 4px;
-    }
-  }
-}  
-  `
+  styleUrls: ['../common/list-filter-styles.css'],
 })
 export class ProjectListFilterStatusComponent {
 

@@ -1,34 +1,34 @@
 import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectType, projectTypeList } from '@services/project/project.model';
-import { ProjectTypeComponent } from './project-type.component';
+import { TaskStatus, taskStatusList } from '@services/task/task.model';
+import { TaskStatusComponent } from './task-status.component';
 
 @Component({
-  selector: 'app-project-list-filter-type',
+  selector: 'app-task-list-filter-status',
   standalone: true,
-  imports: [CommonModule, ProjectTypeComponent],
+  imports: [CommonModule, TaskStatusComponent],
   template: `
-  <span class="label">Type:</span>
+  <span class="label">Status:</span>
   <button type="button" [disabled]="items().length === 0" (click)="reset()" class="btn sm mr-2">
     reset
   </button>
   @for (item of items(); track item) {
     <button type="button" (click)="toggle(item)" class="btn" [class.active]="filters().includes(item)">
-      <app-project-type [type]="item" size="1x" />    
+      <app-task-status [status]="item" size="1x" />
     </button>
   }
   `,
   styleUrls: ['../common/list-filter-styles.css'],
 })
-export class ProjectListFilterTypeComponent {
+export class TaskListFilterStatusComponent {
 
   @Output()
-  filterUpdated = new EventEmitter<ProjectType[]>();
+  filterUpdated = new EventEmitter<TaskStatus[]>();
   
-  protected items = signal<readonly ProjectType[]>(projectTypeList);
-  protected filters = signal<readonly ProjectType[]>([]); //start with none selected
+  protected items = signal<readonly TaskStatus[]>(taskStatusList);
+  protected filters = signal<readonly TaskStatus[]>([]); //start with none selected
 
-  toggle(item: ProjectType) {
+  toggle(item: TaskStatus) {
     this.filters.update(items => {
       if (items.includes(item)) {
         return items.filter(m => m !== item);

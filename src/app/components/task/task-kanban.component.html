@@ -1,0 +1,52 @@
+<h2>
+  <span>Tasks</span>
+  <button type="button" class="cursor-pointer" (click)="toggleFilterUI()">
+    <fa-duotone-icon 
+      [icon]="icons.filters" 
+      size="sm"
+      [primaryColor]="filterCount() > 0 ? 'coral' : 'black'"
+    />
+    <span class="sr-only">filter list</span>
+  </button>
+  <button type="button" class="cursor-pointer" (click)="toggleSortUI()">
+    <fa-duotone-icon 
+      [icon]="icons.sort" 
+      size="sm"
+    />
+    <span class="sr-only">sort list</span>
+  </button>
+</h2>
+
+@if(showFilterUI()) {
+  <div class="p-4 mt-2 border border-slate-400 rounded space-y-2">
+    <app-task-list-filter-status (filterUpdated)="updateFilter('status', $event)" />
+    <app-task-list-filter-project (filterUpdated)="updateFilter('projects', $event)" />
+  </div>
+}
+@if(showSortUI()) {
+  <div class="p-4 mt-2 border border-slate-400 rounded space-y-2">
+    <div class="font-bold">Sort By...</div>
+    <app-task-list-sort-selector [key]="currentSort().key" [direction]="currentSort().direction" (save)="updateSort($event)" />
+  </div>
+}
+
+<div [class]="`mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`">
+  @for (status of statusList(); track status) {
+    <div class="column">
+      <app-task-kanban-col-heading [status]="status" [count]="filteredTasks()[status]?.length ?? 0" />
+      <div class="py-4">
+        @for (task of filteredTasks()[status]; track task.id) {
+          <app-task-card [task]="task" (save)="updateTask($event)" class="my-4" />
+        }
+      </div>
+    </div>
+  }
+</div>
+
+@if(allowNew()) {
+  <div class="fixed bottom-12 left-0 w-full z-20">
+    <div class="view-area flex justify-end">      
+      <app-task-popup-editor [task]="newTask()" isNew iconSize="3x" (save)="updateTask($event)"/>
+    </div>
+  </div>
+}

@@ -1,0 +1,48 @@
+@reference "tailwindcss";
+
+:host {
+  display: block;
+
+  .overlay {
+    @apply fixed top-0 bottom-0 left-0 right-0 bg-slate-100/50 z-40;
+  }
+  .modal {
+    @apply fixed top-[40%] left-[50%] -translate-y-[50%] -translate-x-[50%] 
+      z-50 bg-white/95 border-2 border-slate-300 rounded-xl shadow-lg overflow-hidden;
+  }
+
+  .section {
+    @apply py-3 px-2;
+    &.thin { @apply py-1; }
+  }
+
+  label { 
+    @apply font-semibold text-slate-500 text-right;
+    &:has(+ [required]) {
+      &::after {
+        @apply pl-1 text-red-300 content-['*'];
+      }
+    }
+    &.dirty {
+      @apply text-slate-950;
+    }
+  }
+  input, .input, select, .select, textarea, .textarea {
+    @apply py-1 px-2 col-span-3
+      bg-slate-50 text-slate-800 
+      focus:bg-white focus:text-black
+      border border-white border-b-slate-400 rounded-md
+      invalid:border-b-red-500 invalid:bg-red-100;
+  }
+  .field {
+    @apply my-2 grid grid-cols-5 items-center gap-x-3;  /* add flex-wrap so errors will wrap to next line */
+  }
+  .action {
+    @apply py-2 px-4 bg-slate-200 font-bold rounded-lg cursor-pointer 
+      disabled:opacity-40 disabled:cursor-not-allowed;
+    &.action-default {
+      @apply bg-slate-700 text-white;
+    }
+     
+  }
+}

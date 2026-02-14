@@ -1,0 +1,29 @@
+<div class="">
+
+  <div class="flex justify-end gap-4">
+    <button 
+      type="button"
+      (click)="seed(2)"
+      class="py-1 px-2 border border-slate-600 rounded-md cursor-pointer"
+    >
+      Seed Tasks (2)
+    </button>
+    <button 
+      type="button"
+      (click)="seed(5)"
+      class="py-1 px-2 border border-slate-600 rounded-md cursor-pointer"
+    >
+      Seed Tasks (5)
+    </button>
+    <button 
+      type="button"
+      (click)="seed()"
+      class="py-1 px-2 border border-slate-600 rounded-md cursor-pointer"
+    >
+      Seed Tasks (all)
+    </button>
+  </div>
+  <app-task-kanban />
+
+  
+</div>

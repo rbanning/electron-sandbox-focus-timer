@@ -39,6 +39,10 @@ export class ProjectService {
     return this._projects().some(m => m.id === projectId);
   }
 
+  get(projectId: string) {
+    return this._projects().find(m => m.id === projectId);
+  }
+
   add(project: IProject) {
     this._projects.update(items => [...items, project]);
     this._save();

@@ -1,0 +1,125 @@
+<!-- menu button -->
+@if (isNew()) {
+  <button 
+    type="button"
+    (click)="toggle()"
+    title="new task"
+    class="py-1 px-2 cursor-pointer">
+    <fa-duotone-icon [icon]="icons.new" [size]="iconSize()" />
+    <span class="sr-only">add new task</span>  
+  </button>
+} 
+@else {
+  <app-task-card-menu [status]="taskModel().status" (activate)="btnActivate($event)" />
+}
+
+@if(active()) {
+
+  <div class="overlay"></div>
+  <div class="modal">
+      <!-- header -->
+      <div class="section thin font-bold bg-slate-500 text-slate-50 flex items-center">
+        <span class="flex-1">{{isNew() ? 'New' : 'Edit'}} Task</span>
+        <button 
+          type="button"
+          (click)="cancelEdits()"
+          class="py-1 px-2 cursor-pointer">
+          <fa-duotone-icon [icon]="icons.close" />
+        </button>
+      </div>
+      <!-- body -->
+      <form class="section">
+        <div class="field">
+          <label for="name" [class.dirty]="taskForm.name().dirty()">Name:</label>
+          <input
+            type="text"
+            id="name"
+            [formField]="taskForm.name"
+          />
+          <app-input-error-message [state]="taskForm.name()" />
+        </div>
+        <div class="field">
+          <label for="description" [class.dirty]="taskForm.description().dirty()">Notes:</label>
+          <textarea
+            type="text"
+            id="description"
+            rows="3"
+            [formField]="taskForm.description"
+          ></textarea>
+          <app-input-error-message [state]="taskForm.description()" />
+        </div>
+        <div class="field">
+          <label for="status" [class.dirty]="taskForm.status().dirty()">Status:</label>
+          <select
+            type="text"
+            id="status"
+            [formField]="taskForm.status"
+          >
+            <option disabled value="">--- select status ---</option>
+            @for (item of statusOptions(); track item) {
+              <option [value]="item">{{item}}</option>
+            }
+          </select>
+          <app-input-error-message [state]="taskForm.status()" />
+        </div>
+        <div class="field">
+          <label for="type" [class.dirty]="taskForm.type().dirty()">Type:</label>
+          <select
+            type="text"
+            id="type"
+            [formField]="taskForm.type"
+          >
+            <option disabled value="">--- select type ---</option>
+            @for (item of typeOptions(); track item) {
+              <option [value]="item">{{item}}</option>
+            }
+          </select>
+          <app-input-error-message [state]="taskForm.type()" />
+        </div>
+        <div class="field">
+          <label for="projectId" [class.dirty]="taskForm.projectId().dirty()">Project:</label>
+          <select
+            type="text"
+            id="projectId"
+            [formField]="taskForm.projectId"
+          >
+            <option value="">--- no project ---</option>
+            @for (item of projectOptions(); track item.id) {
+              <option [value]="item.id">{{item.name}}</option>
+            }
+          </select>
+          <app-input-error-message [state]="taskForm.projectId()" />
+        </div>
+        <div class="field">
+          <label for="reminder" [class.dirty]="taskForm.reminder().dirty()">Reminder:</label>
+          <input
+            type="date"
+            id="reminder"
+            placeholder="dd/mm/yyyy"
+            [formField]="taskForm.reminder"
+          />
+          <app-input-error-message [state]="taskForm.reminder()">
+            <span class="text-right text-sm">error</span>
+          </app-input-error-message>
+        </div>
+      </form>
+      <!-- actions -->
+      <div class="section bg-slate-100">
+        <div class="py-2 flex justify-center gap-2 bg-slate-100">
+          <button 
+            type="button"
+            [disabled]="!taskForm().dirty() || taskForm().invalid()"
+            (click)="saveEdits()"
+            class="action action-default">
+            save
+          </button>
+          <button 
+            type="button"
+            (click)="cancelEdits()"
+            class="action">
+            cancel
+          </button>
+        </div>
+      </div>
+  </div>
+}
