@@ -33,7 +33,7 @@
 <div [class]="`mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`">
   @for (status of statusList(); track status) {
     <div class="column">
-      <app-task-kanban-col-heading [status]="status" />
+      <app-task-kanban-col-heading [status]="status" [count]="filteredTasks()[status]?.length ?? 0" />
       <div class="py-4">
         @for (task of filteredTasks()[status]; track task.id) {
           <app-task-card [task]="task" (save)="updateTask($event)" class="my-4" />
@@ -46,7 +46,7 @@
 @if(allowNew()) {
   <div class="fixed bottom-12 left-0 w-full z-20">
     <div class="view-area flex justify-end">      
-      <!-- <app-task-popup-editor [task]="newTask()" isNew iconSize="3x" (save)="updateTask($event)"/> -->
+      <app-task-popup-editor [task]="newTask()" isNew iconSize="3x" (save)="updateTask($event)"/>
     </div>
   </div>
 }

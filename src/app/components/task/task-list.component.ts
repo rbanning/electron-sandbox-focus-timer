@@ -11,6 +11,7 @@ import { TaskListFilterProjectComponent } from './task-list-filter-project.compo
 import { TaskListSortSelectorComponent } from './task-list-sort-selector.component';
 import { TaskCardComponent } from './task-card.component';
 import { GridListFormat } from '@components/common/format-grid-list.type';
+import { TaskPopupEditorComponent } from './task-popup-editor.component';
 
 
 @Component({
@@ -19,7 +20,7 @@ import { GridListFormat } from '@components/common/format-grid-list.type';
   imports: [CommonModule, FontAwesomeModule,
     TaskListFilterStatusComponent, TaskListFilterProjectComponent,
     TaskListSortSelectorComponent,
-    TaskCardComponent,
+    TaskCardComponent, TaskPopupEditorComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrls: ['../common/format-grid-list.css'],

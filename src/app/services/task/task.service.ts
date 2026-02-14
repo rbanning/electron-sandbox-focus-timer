@@ -56,7 +56,7 @@ export class TaskService {
     changes.lastUpdated = dayjsHelp.now(); //update the last update timestamp
     this._tasks.update(items => items.map(item => {
       if (item.id === taskId) {
-        return {...item, ...changes};
+        return this._newTask({...item, ...changes});
       }
       //else
       return item;

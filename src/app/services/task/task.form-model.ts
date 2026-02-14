@@ -1,6 +1,6 @@
 import { required, schema, validate } from '@angular/forms/signals';
 import { dayjsHelp, objHelp, parsers } from '@common/general';
-import { ITask, Task, taskStatusList } from './task.model';
+import { ITask, ITaskBase, Task, TaskBase, taskStatusList } from './task.model';
 
 
 /**
@@ -9,33 +9,31 @@ import { ITask, Task, taskStatusList } from './task.model';
  * forms cannot have optional/null/undefined properties
  *   so we override them in the new interface
  */
-export interface ITaskFormModel extends Omit<ITask, 
-  'description' | 'reminder' | 'lastUpdated' | 'project' | 'toJSON'> {
+export interface ITaskFormModel extends Omit<ITaskBase, 
+  'description' | 'projectId' | 'reminder' | 'lastUpdated' > {
   description: string;
+  projectId: string;
   reminder: string;
   lastUpdated: string;
 }
 
 export function toITaskFormModel(task: ITask): ITaskFormModel {
   return {
-    ...new Task(task).toJSON(),
+    ...new TaskBase(task),
     description: task.description ?? "",
+    projectId: task.projectId ?? "",
     reminder: dayjsHelp.format.asInput(task.reminder, ''),
     lastUpdated: dayjsHelp.format.asInput(task.lastUpdated, ''),
   };
 }
-export const defaultITaskFormModel = toITaskFormModel(new Task({id: ''}));
+export const defaultITaskFormModel = toITaskFormModel(new TaskBase({id: ''}));
 
 export const taskFormModelSchema = schema<ITaskFormModel>((path) => {
   
   //note: using objHelp.asKeysOf() pattern so we can quickly add/remove fields from the validation requirement
 
-  const x = path['id'];
-  const k: keyof ITaskFormModel = 'id';
-  const v = path[k];
-  required(path[k], {})
   //required
-  objHelp.asKeysOf<ITaskFormModel>(defaultITaskFormModel, 'id','name','status','type')
+  objHelp.asKeysOf<ITaskFormModel>(defaultITaskFormModel, 'id','name','status')
     .forEach(key => {
       const schemaPath = path[key];
       if (schemaPath) {

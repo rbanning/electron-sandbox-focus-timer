@@ -11,6 +11,7 @@ import { TaskListFilterProjectComponent } from './task-list-filter-project.compo
 import { TaskListSortSelectorComponent } from './task-list-sort-selector.component';
 import { TaskCardComponent } from './task-card.component';
 import { TaskKanbanColHeadingComponent } from './task-kanban-col-heading.component';
+import { TaskPopupEditorComponent } from './task-popup-editor.component';
 
 type TaskDictionary = {[key in TaskStatus]?: ITask[]}
 
@@ -20,7 +21,7 @@ type TaskDictionary = {[key in TaskStatus]?: ITask[]}
   imports: [CommonModule, FontAwesomeModule,
     TaskListFilterStatusComponent, TaskListFilterProjectComponent,
     TaskListSortSelectorComponent, TaskKanbanColHeadingComponent,
-    TaskCardComponent, 
+    TaskCardComponent, TaskPopupEditorComponent
   ],
   templateUrl: './task-kanban.component.html',
   styles: `:host { display: block; }`,

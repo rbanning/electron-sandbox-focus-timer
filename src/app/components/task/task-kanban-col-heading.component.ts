@@ -12,7 +12,7 @@ import { strHelp } from '@common/general';
     <div class="py-2 font-bold text-xl text-slate-700 text-center border-b-4"
       [style.borderColor]="color()"
     >
-    {{label()}}
+    {{label()}} <span>({{count()}})</span>
     </div>
   `,
   styles: ':host { display: block; }'
@@ -20,6 +20,7 @@ import { strHelp } from '@common/general';
 export class TaskKanbanColHeadingComponent {
 
   status = input.required<TaskStatus>();
+  count = input.required<number>();
   label = computed(() => strHelp.capitalize(this.status(), true));
   protected color = computed(() => taskStatusColorTuple[this.status()][1]);  //get the secondary color
 }

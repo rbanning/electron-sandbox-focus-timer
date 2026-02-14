@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FormField, form } from '@angular/forms/signals'; // !! EXPERIMENTAL
 import { FontAwesomeModule, SizeProp } from '@fortawesome/angular-fontawesome';
-import { faPencilAlt, faPlusCircle, faXmark } from '@fortawesome/pro-duotone-svg-icons';
+import { faPlusCircle, faXmark } from '@fortawesome/pro-duotone-svg-icons';
 
 import { IProject, Project, projectStatusList, projectTypeList } from '@services/project/project.model';
 import { IProjectFormModel, projectFormModelSchema, toIProjectFormModel } from '@services/project/project.form-model';

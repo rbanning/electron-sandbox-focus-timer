@@ -38,9 +38,9 @@ export const taskTypeDictionary = {
 export type TaskTypeGroup = keyof typeof taskTypeDictionary;
 export const taskTypeGroups: TaskTypeGroup[] = castAs<TaskTypeGroup[]>(Object.keys(taskTypeDictionary));
 export type TaskType = typeof taskTypeDictionary[TaskTypeGroup][number];
-export const taskTypes: TaskType[] = castAs<TaskType[]>(Object.values(taskTypeDictionary));
+export const taskTypes: TaskType[] = castAs<TaskType[]>(Object.values(taskTypeDictionary).flat());
 
-export interface ITask {
+export interface ITaskBase {
   id: string;
   name: string;
   status: TaskStatus;
@@ -48,17 +48,11 @@ export interface ITask {
   description?: Nullable<string>;
 
   projectId?: Nullable<string>;
-  project?: Nullable<IProject>;     //navigation prop
-
   reminder?: Nullable<dayjs.Dayjs>;
-
   lastUpdated: dayjs.Dayjs;
-
-  toJSON?: () => Omit<ITask, 'project'>;
 }
 
-
-export class Task implements ITask {
+export class TaskBase implements ITaskBase {
   id: string = strHelp.randomString(12);
   name: string = "";
   status: TaskStatus = "pending";
@@ -66,10 +60,7 @@ export class Task implements ITask {
   description?: Nullable<string>;
 
   projectId?: Nullable<string>;
-  project?: Nullable<IProject>;     //navigation prop
-
   reminder?: Nullable<dayjs.Dayjs>;
-
   lastUpdated: dayjs.Dayjs = dayjsHelp.now();
 
   constructor(obj?: unknown) {
@@ -80,27 +71,9 @@ export class Task implements ITask {
       this.type = parsers.toStringUnionType(arg.type, taskTypes) ?? this.type;
       this.description = arg.description ?? this.description;
       this.projectId = arg.projectId ?? this.projectId;
-      if (primitive.isObject(arg.project)) {
-        if (arg.project.id === this.projectId) {
-          this.project = new Project(arg.project);
-        }
-        else {
-          throw new Error('Task projectId does not match the project object passed into the constructor');
-        }
-      }
       this.reminder = parsers.toDayjs(arg.reminder);
       this.lastUpdated = parsers.toDayjs(arg.lastUpdated) ?? this.lastUpdated;
     })
-  }
-
-
-  toJSON(): Omit<ITask, 'project'> {
-    const clone = new Task(this);
-    if (clone.project) {
-      delete clone.project;
-    }
-
-    return clone;
   }
 
   public static isTask(obj?: unknown): obj is ITask {
@@ -112,4 +85,32 @@ export class Task implements ITask {
     return false;
   }
 
+}
+
+export interface ITask extends ITaskBase {
+  project?: Nullable<IProject>;     //navigation prop
+  toJSON?: () => ITaskBase;
+}
+
+
+export class Task extends TaskBase implements ITask {
+  project?: Nullable<IProject>;     //navigation prop
+  constructor(obj?: unknown) {
+    super(obj);
+    using(obj as ITask, arg => {
+      if (primitive.isObject(arg.project)) {
+        if (arg.project.id === this.projectId) {
+          this.project = new Project(arg.project);
+        }
+        else {
+          throw new Error('Task projectId does not match the project object passed into the constructor');
+        }
+      }
+    })
+  }
+
+
+  toJSON(): ITaskBase {
+    return new TaskBase(this);
+  }
 }

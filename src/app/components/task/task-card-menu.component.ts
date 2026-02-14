@@ -2,7 +2,7 @@ import { Component, computed, effect, ElementRef, inject, input, output, signal 
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleCheck, faCircleEllipsis, faCircleEllipsisVertical, faCirclePause, faCirclePlay, faEllipsis, faEllipsisVertical, faPencilAlt, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
-import { ProjectStatus } from '@services/project/project.model';
+import { TaskStatus } from '@services/task/task.model';
 import { exhaustiveCheck, using } from '@common/misc';
 
 export const actions = ['edit', 'start', 'hold', 'completed'] as const;
@@ -13,13 +13,13 @@ export type MenuIconType = 'vertical' | 'horizontal' | 'circle-vertical' | 'circ
 type ClientXY = { x: number, y: number };
 
 @Component({
-  selector: 'app-project-card-menu',
+  selector: 'app-task-card-menu',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   template: `
     <button 
       type="button"
-      title="toggle the project menu"
+      title="toggle the task menu"
       (click)="toggle()"
       class="p-1 cursor-pointer text-slate-400 hover:text-slate-500" 
     >
@@ -44,10 +44,10 @@ type ClientXY = { x: number, y: number };
   `,
   styles: ':host { display: block; }'
 })
-export class ProjectCardMenuComponent {
+export class TaskCardMenuComponent {
 
   //input
-  originalStatus = input.required<ProjectStatus>({
+  originalStatus = input.required<TaskStatus>({
     alias: 'status'
   });
   type = input<MenuIconType>('circle-vertical');
@@ -59,12 +59,12 @@ export class ProjectCardMenuComponent {
   protected readonly selfRef = inject(ElementRef);
   
   //protected 
-  protected readonly status = signal<ProjectStatus>('pending');
+  protected readonly status = signal<TaskStatus>('pending');
   protected readonly active = signal(false);
   protected readonly client = signal<ClientXY>({x:0,y:0});
 
   protected readonly actionTitle = computed<Record<Action, string>>(() => ({
-    edit: 'Edit the project',
+    edit: 'Edit the task',
     start: 'Update status to "active" and set the start date',
     hold: 'Update the status to "hold"',
     completed: 'Update the status to "completed"',
@@ -75,10 +75,8 @@ export class ProjectCardMenuComponent {
       edit: false,
       start: status === 'active',       //can only set status to start when the current status does NOT equal 'active'
       hold: status === 'hold'
-        || status !== 'active',         //can only set status to 'hold' when the current status equals 'active'
-      completed: status === 'completed'
-        || (status !== 'active'
-        && status !== 'hold')           //can only set status to 'completed' when current status equals 'active' or 'hold'
+        || status === 'cancelled',         //can only set status to 'hold' when the current status does NOT equals 'cancelled'
+      completed: status !== 'active'   //can only set status to 'completed' when current status equals 'active'
     };
   });
   protected readonly menuIcon = computed<IconDefinition>(() => this.updateMenuIcon(this.type()));

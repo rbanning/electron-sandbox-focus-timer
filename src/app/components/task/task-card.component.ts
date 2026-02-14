@@ -5,12 +5,13 @@ import { TaskStatusComponent } from './task-status.component';
 import { TaskDateComponent } from './task-date.component';
 import { TaskStatusHorizontalBorderComponent } from './task-status-horizontal-border.component';
 import { ProjectMiniCardComponent } from '@components/project/project-mini-card.component';
+import { TaskPopupEditorComponent } from './task-popup-editor.component';
 
 @Component({
   selector: 'app-task-card',
   standalone: true,
   imports: [CommonModule, TaskStatusComponent, TaskDateComponent, 
-    TaskStatusHorizontalBorderComponent,
+    TaskStatusHorizontalBorderComponent, TaskPopupEditorComponent,
     ProjectMiniCardComponent
   ],
   template: `
@@ -20,8 +21,11 @@ import { ProjectMiniCardComponent } from '@components/project/project-mini-card.
         <div class="flex-1 font-semibold text-lg leading-5 text-slate-700">{{task().name}}</div>
         <app-task-status [status]="task().status" />
         @if (!readonly()) {
-          <!-- <app-project-popup-editor [project]="project()" (save)="saveEdits($event)" /> -->
+          <app-task-popup-editor [task]="task()" (save)="saveEdits($event)" />
         }
+      </div>
+      <div class="">
+        {{task().type}}
       </div>
       <div class="">
         @if (task().project) {
