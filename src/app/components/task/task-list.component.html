@@ -1,5 +1,5 @@
 <h2>
-  <span>Projects</span>
+  <span>Tasks</span>
   <button type="button" class="cursor-pointer" (click)="toggleFilterUI()">
     <fa-duotone-icon 
       [icon]="icons.filters" 
@@ -19,14 +19,14 @@
 
 @if(showFilterUI()) {
   <div class="p-4 mt-2 border border-slate-400 rounded space-y-2">
-    <app-project-list-filter-status (filterUpdated)="updateFilter('status', $event)" />
-    <app-project-list-filter-type (filterUpdated)="updateFilter('type', $event)" />
+    <app-task-list-filter-status (filterUpdated)="updateFilter('status', $event)" />
+    <app-task-list-filter-project (filterUpdated)="updateFilter('projects', $event)" />
   </div>
 }
 @if(showSortUI()) {
   <div class="p-4 mt-2 border border-slate-400 rounded space-y-2">
     <div class="font-bold">Sort By...</div>
-    <app-project-list-sort-selector [key]="currentSort().key" [direction]="currentSort().direction" (save)="updateSort($event)" />
+    <app-task-list-sort-selector [key]="currentSort().key" [direction]="currentSort().direction" (save)="updateSort($event)" />
   </div>
 }
 
@@ -34,15 +34,15 @@
   class="mt-4" 
   [class.format-grid]="format() === 'Grid'" 
   [class.format-list]="format() === 'List'">
-    @for (project of filteredProjects(); track project.id) {
-      <app-project-card [project]="project" (save)="updateProject($event)" />
+    @for (task of filteredTasks(); track task.id) {
+      <app-task-card [task]="task" (save)="updateTask($event)" />
     }
 </div>
 
 @if(allowNew()) {
   <div class="fixed bottom-12 left-0 w-full z-20">
     <div class="view-area flex justify-end">      
-      <app-project-popup-editor [project]="newProject()" isNew iconSize="3x" (save)="updateProject($event)"/>
+      <!-- <app-task-popup-editor [task]="newTask()" isNew iconSize="3x" (save)="updateTask($event)"/> -->
     </div>
   </div>
 }

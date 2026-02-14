@@ -1,27 +1,29 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectListComponent } from '@components/project/project-list.component';
-import { ProjectService } from '@services/project/project.service';
-import { mockProjectRepo } from '@services/project/project-mock-repo';
-import { arrayHelp } from '@common/general';
+import { TestViewProjectsComponent } from './test-view-projects.component';
+import { TestViewTasksComponent } from './test-view-tasks.component';
+import { TestViewKanbanComponent } from './test-view-kanban.component';
 
-
+const viewList = ['Tasks', 'Kanban', 'Projects'] as const;
+type TestView = typeof viewList[number];
 @Component({
   selector: 'app-test-view',
   standalone: true,
-  imports: [CommonModule, ProjectListComponent],
+  imports: [CommonModule, 
+    TestViewProjectsComponent, 
+    TestViewTasksComponent,
+    TestViewKanbanComponent 
+  ],
   templateUrl: './test-view.component.html',
   styles: ':host { display: block; }'
 })
 export class TestViewComponent {
   title = signal("Testing...");
 
-  subtitle = signal("Github Integration");
+  subtitle = signal("Tasks | Projects");
 
-  private service = inject(ProjectService);
+  protected view = signal<TestView>(viewList[0]);
 
-  protected seed(count?: number) {
-    this.service.seed(arrayHelp.take(mockProjectRepo(), count ?? 1000));
-  }
+  protected views = [...viewList];
 }
 

@@ -1,8 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { StorageService } from '@services/storage/storage.service';
 import { ITask } from './task.model';
-import { dayjsHelp, primitive, objHelp, strHelp } from '@common/general';
+import { dayjsHelp, primitive, objHelp, strHelp, arrayHelp } from '@common/general';
 import { Task } from '@services/task/task.model';
+import { ProjectService } from '@services/project/project.service';
 
 
 export type SortDirection = 'asc' | 'desc';
@@ -22,7 +23,9 @@ export class TaskService {
   private readonly _tasks = signal<ReadonlyArray<ITask>>([]);
   private readonly _sortInfo = signal<SortInfo>(defaultSortInfo);
 
+  //DI
   private storage = inject(StorageService);
+  private projectService = inject(ProjectService);
 
   //public props
   public readonly tasks = computed(() => this._tasks());
@@ -44,7 +47,7 @@ export class TaskService {
   }
 
   add(task: ITask) {
-    this._tasks.update(items => [...items, task]);
+    this._tasks.update(items => [...items, this._newTask(task)]);
     this._save();
     console.log("DEBUG: add task (service)", {id: task.id, tasks: this._tasks()})
   }
@@ -87,7 +90,8 @@ export class TaskService {
 
 
   seed(tasks: ITask[]) {
-    this._tasks.set(tasks);
+    const taskList = tasks.map(t => this._newTask(t));
+    this._tasks.set(taskList);
     this._save();
   }
 
@@ -120,7 +124,7 @@ export class TaskService {
     if (Array.isArray(result) && result.length > 0) {
       //validate integrity of the array by examining the first task
       if (Task.isTask(result[0])) {
-        tasks = result.map(m => new Task(m));
+        tasks = result.map(m => this._newTask(m));
       }
     }
     this._tasks.set(tasks);
@@ -130,6 +134,13 @@ export class TaskService {
     if (objHelp.hasKeys<SortInfo>(sortInfo, ['key', 'direction'])) {
       this._sortInfo.set(sortInfo);
     }
+  }
+
+  private _newTask(obj?: ITask) {
+    if (primitive.isObject(obj) && obj.projectId) {
+      obj.project = this.projectService.get(obj.projectId);
+    }
+    return new Task(obj);
   }
 
   private _save() {

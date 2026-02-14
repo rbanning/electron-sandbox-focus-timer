@@ -19,7 +19,7 @@
 }
 
 .view-area {
-  @apply max-w-5xl mx-auto;
+  @apply max-w-7xl mx-auto;
 }
 
 

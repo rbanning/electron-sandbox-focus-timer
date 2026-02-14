@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+
+:host {
+  @apply flex flex-wrap gap-2; 
+  .label {
+    @apply pr-2;
+  }
+  .btn {
+    @apply py-0.5 px-3.5 
+      border border-gray-500 rounded-2xl
+      hover:border-gray-800
+      bg-white hover:bg-gray-100; 
+    &.active {
+      border: solid 2px black;
+      @apply bg-slate-600/20;
+    }
+    &.sm {
+      padding: 1px 3px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+    }
+  }
+}  

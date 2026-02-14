@@ -1,10 +1,10 @@
 import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectStatus } from '@services/project/project.model';
-import { projectStatusColorTuple } from './project-status-color-tuple';
+import { TaskStatus } from '@services/task/task.model';
+import { taskStatusColorTuple } from './task-status-color-tuple';
 
 @Component({
-  selector: 'app-project-status-horizontal-border',
+  selector: 'app-task-status-horizontal-border',
   standalone: true,
   imports: [CommonModule],
   template: `
@@ -18,8 +18,9 @@ import { projectStatusColorTuple } from './project-status-color-tuple';
   `,
   styles: ':host { display: block; }'
 })
-export class ProjectStatusHorizontalBorderComponent {
+export class TaskStatusHorizontalBorderComponent {
 
-  status = input.required<ProjectStatus>();
-  protected color = computed(() => projectStatusColorTuple[this.status()][1]);  //get the secondary color
+  status = input.required<TaskStatus>();
+  protected color = computed(() => taskStatusColorTuple[this.status()][1]);  //get the secondary color
+
 }

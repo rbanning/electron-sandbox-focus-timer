@@ -3,7 +3,6 @@ import { castAs, Nullable } from "@common/types";
 import { IProject, Project, projectStatusList } from "@services/project/project.model";
 import { dayjsHelp, parsers, primitive, strHelp } from "@common/general";
 import { using } from "@common/misc";
-import { ProjectService } from "@services/project/project.service";
 
 //NOTE: taskStatusList and projectStatusList are the same
 export const taskStatusList = [
@@ -80,7 +79,7 @@ export class Task implements ITask {
       this.status = parsers.toStringUnionType(arg.status, taskStatusList) ?? this.status;
       this.type = parsers.toStringUnionType(arg.type, taskTypes) ?? this.type;
       this.description = arg.description ?? this.description;
-      this.projectId = this.projectId ?? this.projectId;
+      this.projectId = arg.projectId ?? this.projectId;
       if (primitive.isObject(arg.project)) {
         if (arg.project.id === this.projectId) {
           this.project = new Project(arg.project);
@@ -89,13 +88,6 @@ export class Task implements ITask {
           throw new Error('Task projectId does not match the project object passed into the constructor');
         }
       }
-      else if (primitive.isString(this.projectId)) {
-        //get the project from the Project service;
-        const service = new ProjectService();
-        this.project = service.get(this.projectId);
-        if (!this.project) { console.warn(`Task constructor could not find the associated project (project id: ${this.projectId})`)};
-      }
-
       this.reminder = parsers.toDayjs(arg.reminder);
       this.lastUpdated = parsers.toDayjs(arg.lastUpdated) ?? this.lastUpdated;
     })

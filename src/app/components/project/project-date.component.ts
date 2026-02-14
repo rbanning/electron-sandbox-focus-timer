@@ -1,10 +1,9 @@
-import { Component, computed, input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Nullable } from '@common/types';
 import dayjs from 'dayjs';
-import { dayjsHelp } from '@common/general';
+import { Component, input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { faBolt, faPersonRunning, faSquareQuestion, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Nullable } from '@common/types';
+import { FormattedDateTimeComponent } from '@components/general/formatted-date-time';
 
 
 export type DateType = 'start' | 'updated' | 'unknown';
@@ -12,23 +11,9 @@ export type DateType = 'start' | 'updated' | 'unknown';
 @Component({
   selector: 'app-project-date',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FormattedDateTimeComponent],
   template: `
-    <span 
-      class="inline-flex items-center gap-1 text-sm text-slate-500 font-mono" 
-      [title]="type() + ' date'"
-      [attr.data-date-value]="isValid() ? date()?.toISOString() : ''"
-      [attr.data-date-type]="type()"
-    >
-      <fa-duotone-icon [icon]="icons[type()]" />
-      @if(isValid()) {
-        <span class="word-spacing-tightest">{{dateFormatted()}}</span>
-        <span class="word-spacing-tightest">{{timeFormatted()}}</span>      
-      }
-      @else {
-        <span>n/a</span>
-      }
-    </span>
+    <app-formatted-date-time [type]="type()" [date]="date()" [icon]="icons[type()]" />
   `,
   styles: ':host { display: block; }'
 })
@@ -36,11 +21,7 @@ export class ProjectDateComponent {
 
   date = input<Nullable<dayjs.Dayjs>>();
   type = input<DateType>('unknown');
-  isValid = computed(() => dayjsHelp.isDayJs(this.date()));
-
-  dateFormatted = computed(() => dayjsHelp.format.asDate(this.date(), ""));
-  timeFormatted = computed(() => dayjsHelp.format.asTime(this.date(), ""));
-
+  
   icons: Record<DateType, IconDefinition> = {
     start: faPersonRunning,
     updated: faBolt,

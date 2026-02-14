@@ -1,17 +1,17 @@
-import { castAs } from '@common/types';
 import { booleanAttribute, Component, computed, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowDownWideShort, faArrowUpShortWide, faFilters, faSort } from '@fortawesome/pro-duotone-svg-icons';
+import { faFilters, faSort } from '@fortawesome/pro-duotone-svg-icons';
 
-import { arrayHelp, objHelp, strHelp } from '@common/general';
+import { arrayHelp, strHelp } from '@common/general';
 import { IProject, Project, ProjectStatus, projectStatusList, ProjectType, projectTypeList } from '@services/project/project.model';
+import { ProjectService, SortInfo } from '@services/project/project.service';
 import { ProjectListFilterStatusComponent } from './project-list-filter-status.component';
 import { ProjectCardComponent } from './project-card.component';
 import { ProjectListFilterTypeComponent } from './project-list-filter-type.component';
 import { ProjectPopupEditorComponent } from './project-popup-editor.component';
-import { ProjectService, SortInfo } from '@services/project/project.service';
 import { ProjectListSortSelectorComponent } from './project-list-sort-selector.component';
+import { GridListFormat } from '@components/common/format-grid-list.type';
 
 @Component({
   selector: 'app-project-list',
@@ -21,7 +21,7 @@ import { ProjectListSortSelectorComponent } from './project-list-sort-selector.c
     ProjectListSortSelectorComponent,
     ProjectCardComponent, ProjectPopupEditorComponent],
   templateUrl: './project-list.component.html',
-  styleUrls: ['./project-list.component.css'],
+  styleUrls: ['../common/format-grid-list.css'],
 })
 export class ProjectListComponent {
 
@@ -29,6 +29,7 @@ export class ProjectListComponent {
   private service = inject(ProjectService);
 
   //input
+  format = input<GridListFormat>('Grid');
   readonly = input(false, { transform: booleanAttribute });
   allowNew = input(true, { transform: booleanAttribute });
 
