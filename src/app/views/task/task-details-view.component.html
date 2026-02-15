@@ -1,0 +1,24 @@
+<div class="view-area">
+  <h1 class="flex items-center gap-4">
+    <a [routerLink]="['/tasks']" title="back to tasks">
+      <fa-duotone-icon [icon]="icons.back" />
+    </a>
+    <span>
+      Tasks
+    </span>
+  </h1>
+  <h2 class="justify-center">
+    <span>id: {{id()}}</span>
+    <span>{{task()?.name ?? 'Unknown'}}</span>  
+  </h2>
+  <div class="my-12 max-w-4xl mx-auto">
+    @if (task()) {
+      <app-task-card-detail [task]="task()" />
+    }
+    @else {
+      <h1>Missing</h1>
+      <div class="text-center">The task you requested is no longer available.</div>
+    }
+  </div>
+  
+</div>

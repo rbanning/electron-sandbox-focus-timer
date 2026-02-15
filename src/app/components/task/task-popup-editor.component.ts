@@ -34,7 +34,7 @@ export class TaskPopupEditorComponent {
   //callbacks
   save = output<ITask>();
 
-  //writable person signal for tracking changes
+  //writable task signal for tracking changes
   protected readonly taskModel = signal<ITaskFormModel>(toITaskFormModel(new Task())); 
 
   //form for binding model to input elements

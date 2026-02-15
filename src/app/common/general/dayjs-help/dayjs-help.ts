@@ -6,6 +6,7 @@ dayjs.extend(utc);
 import { Nullable } from "../../types/nullable";
 import { primitive } from "../primitive";
 import { format } from "./formatters";
+import { parsers } from "../parsers";
 
 //#region >>> THE METHODS <<<
 
@@ -30,6 +31,25 @@ const toDayJsUtc = (value: dayjs.ConfigType, defaultValue: Nullable<dayjs.Dayjs>
   const ret: Nullable<dayjs.Dayjs> = primitive.isNotNullish(value) ? dayjs.utc(value) : null;
   return isDayJs(ret) ? ret : defaultValue;
 };
+
+const buildDayJs = (date: Nullable<string>, time: Nullable<string>, defaultValue: Nullable<dayjs.Dayjs> = null) => {
+  if (date) {
+    let ret: Nullable<dayjs.Dayjs> = toDayJs(date);
+    if (isDayJs(ret) && time) {
+      const parts = time.split(':');
+      ret = ret.set('hour', parsers.toInt(parts[0]) ?? 0);
+      if (parts.length > 1) {
+        ret = ret.set('minute', parsers.toInt(parts[1]) ?? 0);
+      }
+      if (parts.length > 3) {
+        ret = ret.set('second', parsers.toInt(parts[2]) ?? 0);
+      }
+    }
+    return isDayJs(ret) ? ret : defaultValue;
+  }
+  //else
+  return defaultValue;
+}
 
 const isUtc = (obj: dayjs.Dayjs): boolean => {
   return isDayJs(obj) && obj.isUTC();
@@ -160,6 +180,7 @@ export const dayjsHelp = {
   isDayJs,
   toDayJs,
   toDayJsUtc,
+  buildDayJs,
   isUtc,
   toNiceString,
   toIsoString,

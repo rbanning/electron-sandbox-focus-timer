@@ -10,6 +10,7 @@ const formats = {
   date: 'MMM. DD, YYYY',
   time: 'h:mm A',
   input: 'YYYY-MM-DD', //used for <input type="date" />
+  inputTime: 'HH:mm', //used for <input type="time" />
 }
 
 export const format = {
@@ -34,6 +35,9 @@ export const format = {
   },
   asInput: (value: unknown | null, defaultValue: string = DEFAULT_VALUE) => {
     return format.as(value, formats.input, defaultValue);
+  },
+  asInputTime: (value: unknown | null, defaultValue: string = DEFAULT_VALUE) => {
+    return format.as(value, formats.inputTime, defaultValue);
   },
   fromNow: (value: unknown | null, withoutSuffix?: boolean, defaultValue: string = DEFAULT_VALUE) => {
     if (value && isDayJsConfig(value)) {
