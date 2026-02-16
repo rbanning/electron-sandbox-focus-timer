@@ -81,6 +81,14 @@ const compare = (d1: Nullable<dayjs.Dayjs>, d2: Nullable<dayjs.Dayjs>, handleNul
   }
 }
 
+const equals = (d1: Nullable<dayjs.Dayjs>, d2: Nullable<dayjs.Dayjs>): boolean => {
+  if (primitive.isNullish(d1) || primitive.isNullish(d2)) {
+    return d1 === d2;
+  }
+  //else
+  return compare(d1, d2) === 0;
+}
+
 const isSameDay = (value1: dayjs.ConfigType, value2: dayjs.ConfigType): boolean => {
   const d1 = toDayJs(value1),
         d2 = toDayJs(value2);
@@ -185,6 +193,7 @@ export const dayjsHelp = {
   toNiceString,
   toIsoString,
   compare,  //sorting
+  equals,
   isSameDay,
   isFutureDate,
   isPastDue,

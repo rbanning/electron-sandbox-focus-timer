@@ -6,7 +6,7 @@ import { FontAwesomeModule, SizeProp } from '@fortawesome/angular-fontawesome';
 import { faPlusCircle, faXmark } from '@fortawesome/pro-duotone-svg-icons';
 
 import { ITask, Task, TaskStatus, taskStatusList, TaskType, taskTypes } from '@services/task/task.model';
-import { ITaskFormModel, taskFormModelSchema, toITaskFormModel } from '@services/task/task.form-model';
+import { ITaskFormModel, taskFormModelSchema, toITaskFormModel, toTask } from '@services/task/task.form-model';
 import { InputErrorMessageComponent } from '@components/input/input-error-message.component';
 import { Action, TaskCardMenuComponent } from './task-card-menu.component';
 import { exhaustiveCheck } from '@common/misc';
@@ -97,8 +97,9 @@ export class TaskPopupEditorComponent {
   }
 
   saveEdits() {
-    console.log('DEBUG: saveEdits (editor)', this.taskModel());
-    this.save.emit(new Task(this.taskModel()));
+    const task = toTask(this.taskModel());
+    console.log('DEBUG: saveEdits (editor)', {model: this.taskModel(), task});
+    this.save.emit(task);
     this.taskForm().reset(); //reset the form's state
     this.toggle(false); //close editor
   }

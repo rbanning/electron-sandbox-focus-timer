@@ -43,7 +43,7 @@ export const taskFormModelSchema = schema<ITaskFormModel>((path) => {
   //note: using objHelp.asKeysOf() pattern so we can quickly add/remove fields from the validation requirement
 
   //required
-  objHelp.asKeysOf<ITaskFormModel>(defaultITaskFormModel, 'id', 'name', 'status').forEach((key) => {
+  objHelp.asKeysOf<ITaskFormModel>(defaultITaskFormModel, 'id', 'name', 'status', 'type').forEach((key) => {
     const schemaPath = path[key];
     if (schemaPath) {
       required(schemaPath, { message: `${String(key)} is required` });

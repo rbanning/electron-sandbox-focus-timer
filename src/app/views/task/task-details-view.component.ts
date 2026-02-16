@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, OnDestroy, OnInit, signal }
 import { CommonModule } from '@angular/common';
 import { TaskService } from '@services/task/task.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ITask } from '@services/task/task.model';
+import { ITask, Task } from '@services/task/task.model';
 import { TaskCardDetailComponent } from '@components/task/task-card-detail.component';
 import { Nullable } from '@common/types';
 import { faCircleChevronLeft } from '@fortawesome/pro-duotone-svg-icons';
@@ -38,7 +38,14 @@ export class TaskDetailsViewComponent {
   
   //save() = update task and exit
   protected save(task: ITask) {
-    console.log("TODO: implement save()", {task});
+    //save
+    const existing = this.taskService.get(this.task()?.id ?? 'does not exist');
+    if (existing) {
+      this.taskService.update(task.id, Task.changes(existing, task))
+    }
+    else {
+      this.taskService.add(task);
+    }
     //TODO: add toast
     this.exit();
   }

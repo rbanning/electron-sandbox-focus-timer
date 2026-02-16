@@ -18,7 +18,7 @@ import { dayjsHelp } from '@common/general';
   imports: [CommonModule, FormsModule, FontAwesomeModule, FormField, 
     InputErrorMessageComponent, ProjectCardMenuComponent],
   templateUrl: './project-popup-editor.component.html',
-  styleUrl: './project-popup-editor.component.css',
+  styleUrls: ['../common/edit-styles.css','../common/popup-editor-styles.css'],
 })
 export class ProjectPopupEditorComponent {
 
@@ -90,7 +90,6 @@ export class ProjectPopupEditorComponent {
   }
 
   saveEdits() {
-    console.log('DEBUG: saveEdits (editor)', this.projectModel());
     this.save.emit(new Project(this.projectModel()));
     this.projectForm().reset(); //reset the form's state
     this.toggle(false); //close editor
@@ -121,7 +120,7 @@ export class ProjectPopupEditorComponent {
   _updateStatusHold() {
     //validate
     const status = this.projectModel().status;
-    if (status === 'active') {
+    if (status !== 'hold') {
       //only update the startDate if it is empty
       const startDate = this.projectModel().startDate || dayjsHelp.format.asInput(dayjsHelp.now());
       this.projectModel.update(v => ({...v, status: 'hold', startDate}));
@@ -135,7 +134,7 @@ export class ProjectPopupEditorComponent {
   _updateStatusCompleted() {
     //validate
     const status = this.projectModel().status;
-    if (status === 'active' || status === 'hold') {
+    if (status !== 'completed') {
       //only update the startDate if it is empty
       const startDate = this.projectModel().startDate || dayjsHelp.format.asInput(dayjsHelp.now());
       this.projectModel.update(v => ({...v, status: 'completed', startDate}));

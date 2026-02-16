@@ -7,13 +7,9 @@
       Tasks
     </span>
   </h1>
-  <h2 class="justify-center">
-    <span>id: {{id()}}</span>
-    <span>{{task()?.name ?? 'Unknown'}}</span>  
-  </h2>
-  <div class="my-12 max-w-4xl mx-auto">
+  <div class="my-4 max-w-4xl mx-auto">
     @if (task()) {
-      <app-task-card-detail [task]="task()" />
+      <app-task-card-detail [task]="task()" (save)="save($event)" (cancel)="cancel()" />
     }
     @else {
       <h1>Missing</h1>

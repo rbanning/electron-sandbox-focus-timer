@@ -1,94 +1,126 @@
-import { Component, computed, effect, ElementRef, inject, input, output, signal } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, input, OnDestroy, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircleCheck, faCircleEllipsis, faCircleEllipsisVertical, faCirclePause, faCirclePlay, faEllipsis, faEllipsisVertical, faPencilAlt, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
 import { ProjectStatus } from '@services/project/project.model';
-import { exhaustiveCheck, using } from '@common/misc';
+import { exhaustiveCheck } from '@common/misc';
+import { Nullable } from '@common/types';
 
 export const actions = ['edit', 'start', 'hold', 'completed'] as const;
 export type Action = typeof actions[number];
+export type ActionOption = {
+  action: Action;
+  icon: IconDefinition;
+  title: string;
+}
 
-export type MenuIconType = 'vertical' | 'horizontal' | 'circle-vertical' | 'circle-horizontal';
+const icons: Record<Action, IconDefinition> = {
+  edit: faPencilAlt,
+  start: faCirclePlay,
+  hold: faCirclePause,
+  completed: faCircleCheck,
+} as const;
 
-type ClientXY = { x: number, y: number };
+const allActions: Record<Action, ActionOption> = {
+    edit: { action: 'edit', title: 'Edit the Project', icon: icons.edit },
+    start: { action: 'start', title: 'Start the Project', icon: icons.start },
+    hold: { action: 'hold', title: 'Mark the Project as Hold', icon: icons.hold },
+    completed: { action: 'completed', title: 'Mark the Project as Completed', icon: icons.completed },
+} as const;
+
+const menuStates = ['open', 'closed', 'disabled'] as const;
+type MenuState = typeof menuStates[number];
 
 @Component({
   selector: 'app-project-card-menu',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
   template: `
-    <button 
-      type="button"
-      title="toggle the project menu"
-      (click)="toggle()"
-      class="p-1 cursor-pointer text-slate-400 hover:text-slate-500" 
-    >
-      <fa-duotone-icon [icon]="menuIcon()" size="lg" primaryColor="black" />
-    </button>
-    @if(active()) {
-      <div class="fixed z-20 flex flex-col py-2 bg-slate-100 border-2 rounded" 
-        [style.top]="client().y" [style.left]="client().x">
-        @for(action of actionList; track action) {
+    @if (menuState() === 'closed') {
+      <button 
+        type="button"
+        title="Show Edit Menu"
+        (click)="toggleMenu('open')"
+        animate.enter="enter-fade-in-from-above"
+        animate.leave="leave-fade-out-to-above"
+        class="-translate-y-1 px-3 py-1 cursor-pointer hover:bg-slate-200"
+      >
+        <fa-duotone-icon [icon]="menuIcon" size="1x" secondaryColor="cornflowerblue" />
+      </button>
+    } 
+    @else if (menuState() === 'open') {
+      <div 
+        animate.enter="enter-fade-in-from-below"
+        animate.leave="leave-fade-out-to-below"
+        (mouseover)="resetMenuTimer()"
+        class="flex flex-col bg-white border border-slate-100 rounded" >
+        @for(item of actionList(); track item.action) {
           <button 
             type="button"
-            [title]="actionTitle()[action]"
-            [disabled]="disabled()[action]"
-            (click)="handleClick(action)"
-            class="px-3 py-2 cursor-pointer disabled:opacity-40 disabled:cursor-none hover:bg-slate-200"
+            [title]="item.title"
+            (click)="handleClick(item.action)"
+            class="px-3 py-1 cursor-pointer hover:bg-slate-200"
           >
-            <fa-duotone-icon [icon]="icons[action]" size="lg" secondaryColor="cornflowerblue" />
+            <fa-duotone-icon [icon]="item.icon" size="1x" secondaryColor="cornflowerblue" />
           </button>
         }
       </div>
     }
   `,
-  styles: ':host { display: block; }'
+  styleUrls: ['../common/enter-leave-styles.css']
 })
-export class ProjectCardMenuComponent {
+export class ProjectCardMenuComponent implements OnDestroy {
 
   //input
   originalStatus = input.required<ProjectStatus>({
     alias: 'status'
   });
-  type = input<MenuIconType>('circle-vertical');
 
   //output  
   activate = output<Action>();
   
-  //DI
-  protected readonly selfRef = inject(ElementRef);
   
   //protected 
   protected readonly status = signal<ProjectStatus>('pending');
-  protected readonly active = signal(false);
-  protected readonly client = signal<ClientXY>({x:0,y:0});
 
-  protected readonly actionTitle = computed<Record<Action, string>>(() => ({
-    edit: 'Edit the project',
-    start: 'Update status to "active" and set the start date',
-    hold: 'Update the status to "hold"',
-    completed: 'Update the status to "completed"',
-  }));
-  protected readonly disabled = computed<Record<Action, boolean>>(() => {
+  protected menuState = signal<MenuState>('closed');
+  protected menuIcon = faCircleEllipsisVertical;
+  protected menuTimeout: Nullable<number> = null;
+
+
+  protected readonly actionList = computed<ActionOption[]>(() => {
+    const ret: ActionOption[] = [allActions.edit];  //everyone gets edit
+
     const status = this.status();
-    return {
-      edit: false,
-      start: status === 'active',       //can only set status to start when the current status does NOT equal 'active'
-      hold: status === 'hold'
-        || status !== 'active',         //can only set status to 'hold' when the current status equals 'active'
-      completed: status === 'completed'
-        || (status !== 'active'
-        && status !== 'hold')           //can only set status to 'completed' when current status equals 'active' or 'hold'
-    };
+    switch(status) {
+      case 'pending':
+        ret.push(allActions.start);
+        ret.push(allActions.hold);
+        break;
+      case 'active':
+        ret.push(allActions.hold);
+        ret.push(allActions.completed);
+        break;
+      case 'hold':
+        ret.push(allActions.start);
+        break;
+      case 'issue':
+        ret.push(allActions.start);
+        ret.push(allActions.hold);
+        break;
+      case 'completed':
+        ret.push(allActions.start);
+        ret.push(allActions.hold);
+        break;
+      case 'cancelled':
+        // no quick edits
+        break;
+
+      default:
+        exhaustiveCheck(status);
+    }
+    return ret;
   });
-  protected readonly menuIcon = computed<IconDefinition>(() => this.updateMenuIcon(this.type()));
-  protected readonly icons: Record<Action, IconDefinition> = {
-    edit: faPencilAlt,
-    start: faCirclePlay,
-    hold: faCirclePause,
-    completed: faCircleCheck,
-  };
-  protected readonly actionList = actions;
 
   constructor() {
     effect(() => {
@@ -96,34 +128,40 @@ export class ProjectCardMenuComponent {
     });
   }
 
-  //methods
-  protected toggle() {
-    using(this.selfRef.nativeElement as Element, el => {
-      const { x, y } = el.getBoundingClientRect();
-      this.client.set({x,y});
-    })
-    this.active.update(v => !v);
+  ngOnDestroy(): void {
+    this.clearMenuTimer();
   }
 
-  protected handleClick(action: Action) {
-    this.active.set(false);
-    this.activate.emit(action);
-  }
-  
-  //private (helper) methods
-  private updateMenuIcon(type: MenuIconType) {
-    switch (type) {
-      case 'vertical':
-        return faEllipsisVertical; 
-      case 'circle-vertical':
-        return faCircleEllipsisVertical; 
-      case 'horizontal':
-        return faEllipsis; 
-      case 'circle-horizontal':
-        return faCircleEllipsis; 
-      default:
-        exhaustiveCheck(type);
+  //methods
+
+  protected toggleMenu(state: MenuState) {
+    this.menuState.set(state);
+    if (state === 'open') {
+      this.resetMenuTimer();
+    }
+    else {
+      this.clearMenuTimer();
     }
   }
 
+  protected resetMenuTimer() {
+    this.clearMenuTimer();
+    this.setMenuTimer();
+  }
+
+  protected handleClick(action: Action) {
+    this.activate.emit(action);
+  }
+
+  //private
+  private setMenuTimer() {
+    this.menuTimeout = window.setTimeout(() => {
+      this.toggleMenu('closed');
+    }, 7000);
+  }
+  private clearMenuTimer() {
+    if (this.menuTimeout) {
+      window.clearTimeout(this.menuTimeout);
+    }
+  }
 }

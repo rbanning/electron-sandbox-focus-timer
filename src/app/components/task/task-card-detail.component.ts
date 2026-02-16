@@ -19,7 +19,7 @@ import { Nullable } from '@common/types';
     InputErrorMessageComponent
   ],
   templateUrl: './task-card-detail.component.html',
-  styleUrls: ['./task-card-detail.component.css']
+  styleUrls: ['../common/edit-styles.css']
 })
 export class TaskCardDetailComponent {
 

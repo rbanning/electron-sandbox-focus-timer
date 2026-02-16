@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { castAs, Nullable } from "@common/types";
 import { IProject, Project, projectStatusList } from "@services/project/project.model";
-import { dayjsHelp, parsers, primitive, strHelp } from "@common/general";
+import { dayjsHelp, objHelp, parsers, primitive, strHelp } from "@common/general";
 import { using } from "@common/misc";
 
 //NOTE: taskStatusList and projectStatusList are the same
@@ -85,6 +85,43 @@ export class TaskBase implements ITaskBase {
     return false;
   }
 
+  public static changes(current: ITaskBase, pending: ITaskBase) {
+    const ret: Partial<Record<keyof ITaskBase, ITaskBase[keyof ITaskBase]>> = {};
+    const patchableFields: (keyof ITaskBase)[] = [
+      // id cannot be updated 
+      // lastUpdated is automatically updated
+      'name',
+      'status',
+      'type',
+      'description',
+      'projectId',
+      'reminder',
+    ];
+
+    const equals = (key: keyof ITaskBase): boolean => {
+      const currentValue = current[key];
+      const pendingValue = pending[key];
+
+      if (key === 'reminder') {
+        return dayjsHelp.equals(current.reminder, pending.reminder);
+      }
+
+      // treat null and undefined as the same
+      if (primitive.isNullish(currentValue) && primitive.isNullish(pendingValue)) {
+        return true;
+      }
+
+      return currentValue === pendingValue;
+    };
+
+    patchableFields.forEach((key) => {
+      if (!equals(key)) {
+        ret[key] = pending[key];
+      }
+    });
+
+    return ret as Partial<ITaskBase>;
+  }
 }
 
 export interface ITask extends ITaskBase {
@@ -112,5 +149,9 @@ export class Task extends TaskBase implements ITask {
 
   toJSON(): ITaskBase {
     return new TaskBase(this);
+  }
+
+  public static override changes(current: ITask, pending: ITask) {
+    return TaskBase.changes(current, pending);
   }
 }
