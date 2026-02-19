@@ -1,0 +1,19 @@
+@reference "tailwindcss";
+
+:host {
+  @apply block;
+}
+.pop-menu {
+  @apply flex flex-col border rounded
+    bg-transparent border-transparent transition-colors;
+  &.open {
+    @apply bg-white border-slate-100;
+  }  
+}
+
+.btn {
+  @apply px-1 py-1 cursor-pointer hover:bg-slate-200 transition-all;
+  &.rotate {
+    @apply rotate-90;
+  }
+}

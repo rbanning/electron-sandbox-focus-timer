@@ -1,4 +1,4 @@
-import { parsers, primitive, strHelp } from "@common/general";
+import { dayjsHelp, parsers, primitive, strHelp } from "@common/general";
 import { using } from "@common/misc";
 import { Nullable } from "@common/types";
 import dayjs from "dayjs";
@@ -66,5 +66,43 @@ export class Project {
     //else
     return false;
   }
+
+  public static changes(current: IProject, pending: IProject) {
+    const ret: Partial<Record<keyof IProject, IProject[keyof IProject]>> = {};
+    const patchableFields: (keyof IProject)[] = [
+      // id cannot be updated 
+      // lastUpdated is automatically updated
+      'name',
+      'status',
+      'type',
+      'client',
+      'startDate',
+    ];
+
+    const equals = (key: keyof IProject): boolean => {
+      const currentValue = current[key];
+      const pendingValue = pending[key];
+
+      if (key === 'startDate') {
+        return dayjsHelp.equals(current.startDate, pending.startDate);
+      }
+
+      // treat null and undefined as the same
+      if (primitive.isNullish(currentValue) && primitive.isNullish(pendingValue)) {
+        return true;
+      }
+
+      return currentValue === pendingValue;
+    };
+
+    patchableFields.forEach((key) => {
+      if (!equals(key)) {
+        ret[key] = pending[key];
+      }
+    });
+
+    return ret as Partial<IProject>;
+  }
+
 }
 

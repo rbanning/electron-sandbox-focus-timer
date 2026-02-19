@@ -16,21 +16,25 @@ import { ProjectStatusHorizontalBorderComponent } from './project-status-horizon
     ProjectDateComponent, ProjectPopupEditorComponent],
   template: `
     @if (isValid()) {
-    <div class="group relative p-2 pl-4 pb-4 border border-slate-300 bg-slate-50 rounded-md shadow-md overflow-hidden" [attr.data-id]="project().id">      
-      <div class="flex items-center gap-1">
-        <div class="flex-1 font-semibold text-lg leading-5 text-slate-700">{{project().name}}</div>
-        <app-project-status [status]="project().status" />
-        <app-project-type [type]="project().type" />
+    <div class="group relative p-2 pl-4 pb-4 border border-slate-300 bg-slate-50 rounded-md shadow-md overflow-hidden" [attr.data-id]="project().id"> 
+      <div class="flex gap-1">     
+        <div class="flex-1">
+          <div class="flex items-center gap-1">
+            <div class="flex-1 font-semibold text-lg leading-5 text-slate-700">{{project().name}}</div>
+            <app-project-status [status]="project().status" />
+            <app-project-type [type]="project().type" />
+          </div>
+          <div class="flex gap-2 text-slate-400">
+            <span class="">{{project().client}}</span>
+          </div>
+          <div class="-space-y-1">
+            <app-project-date [date]="project().startDate" type="start" />
+            <app-project-date [date]="project().lastUpdated" type="updated" />
+          </div>
+        </div>
         @if (!readonly()) {
           <app-project-popup-editor [project]="project()" (save)="saveEdits($event)" />
         }
-      </div>
-      <div class="flex gap-2 text-slate-400">
-        <span class="">{{project().client}}</span>
-      </div>
-      <div class="-space-y-1">
-        <app-project-date [date]="project().startDate" type="start" />
-        <app-project-date [date]="project().lastUpdated" type="updated" />
       </div>
       <app-project-status-horizontal-border [status]="project().status" />
     </div>

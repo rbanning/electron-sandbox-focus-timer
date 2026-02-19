@@ -96,12 +96,15 @@ export class ProjectListComponent {
 
 
   protected updateProject (project: IProject) {
-    console.log('DEBUG: updateProject (list)', project);
-    if (this.service.exists(project.id)) {
-      this.service.update(project.id, project);
+    const existing = this.service.get(project.id);
+    if (existing) {
+      const changes = Project.changes(existing, project);
+      this.service.update(project.id, changes);
+      //todo: add toast;
     }
     else {
       this.service.add(project);
+      //todo: add toast;
     }
   }
 }

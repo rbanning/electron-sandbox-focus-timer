@@ -6,6 +6,7 @@ dayjs.extend(utc);
 import { Nullable } from "../../types/nullable";
 import { primitive } from "../primitive";
 import { format } from "./formatters";
+import { parsers } from "../parsers";
 
 //#region >>> THE METHODS <<<
 
@@ -30,6 +31,25 @@ const toDayJsUtc = (value: dayjs.ConfigType, defaultValue: Nullable<dayjs.Dayjs>
   const ret: Nullable<dayjs.Dayjs> = primitive.isNotNullish(value) ? dayjs.utc(value) : null;
   return isDayJs(ret) ? ret : defaultValue;
 };
+
+const buildDayJs = (date: Nullable<string>, time: Nullable<string>, defaultValue: Nullable<dayjs.Dayjs> = null) => {
+  if (date) {
+    let ret: Nullable<dayjs.Dayjs> = toDayJs(date);
+    if (isDayJs(ret) && time) {
+      const parts = time.split(':');
+      ret = ret.set('hour', parsers.toInt(parts[0]) ?? 0);
+      if (parts.length > 1) {
+        ret = ret.set('minute', parsers.toInt(parts[1]) ?? 0);
+      }
+      if (parts.length > 3) {
+        ret = ret.set('second', parsers.toInt(parts[2]) ?? 0);
+      }
+    }
+    return isDayJs(ret) ? ret : defaultValue;
+  }
+  //else
+  return defaultValue;
+}
 
 const isUtc = (obj: dayjs.Dayjs): boolean => {
   return isDayJs(obj) && obj.isUTC();
@@ -59,6 +79,14 @@ const compare = (d1: Nullable<dayjs.Dayjs>, d2: Nullable<dayjs.Dayjs>, handleNul
   } else {
     return (d1 === d2 ? 0 : (d1 ? 1 : -1)) * (handleNulls === 'last' ? -1 : 1);
   }
+}
+
+const equals = (d1: Nullable<dayjs.Dayjs>, d2: Nullable<dayjs.Dayjs>): boolean => {
+  if (primitive.isNullish(d1) || primitive.isNullish(d2)) {
+    return d1 === d2;
+  }
+  //else
+  return compare(d1, d2) === 0;
 }
 
 const isSameDay = (value1: dayjs.ConfigType, value2: dayjs.ConfigType): boolean => {
@@ -160,10 +188,12 @@ export const dayjsHelp = {
   isDayJs,
   toDayJs,
   toDayJsUtc,
+  buildDayJs,
   isUtc,
   toNiceString,
   toIsoString,
   compare,  //sorting
+  equals,
   isSameDay,
   isFutureDate,
   isPastDue,

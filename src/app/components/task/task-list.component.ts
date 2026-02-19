@@ -98,12 +98,15 @@ export class TaskListComponent {
 
 
   protected updateTask (task: ITask) {
-    console.log('DEBUG: updateTask (list)', task);
-    if (this.service.exists(task.id)) {
-      this.service.update(task.id, task);
+    const existing = this.service.get(task.id);
+    if (existing) {
+      const changes = Task.changes(existing, task);
+      this.service.update(task.id, changes);
+      //todo: add toast;
     }
     else {
       this.service.add(task);
+      //todo: add toast;
     }
   }
 
