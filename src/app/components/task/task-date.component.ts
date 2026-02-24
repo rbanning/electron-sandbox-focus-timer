@@ -13,7 +13,7 @@ export type DateType = 'reminder' | 'updated' | 'unknown';
   standalone: true,
   imports: [CommonModule, FormattedDateTimeComponent],
   template: `
-    <app-formatted-date-time [type]="type()" [date]="date()" [icon]="icons[type()]" [active]="active()" />
+    <app-formatted-date-time [type]="type()" [date]="date()" [icon]="icons[type()]" [active]="active()" [attention]="attention()" />
   `,
   styles: ':host { display: block; }'
 })
@@ -25,6 +25,15 @@ export class TaskDateComponent {
   protected active = computed(() => {
     if (dayjsHelp.isDayJs(this.date())) {
       return this.type() === 'reminder' && dayjsHelp.isFutureDate(this.date());
+    }
+    //else
+    return false;
+  })
+  protected attention = computed(() => {
+    if (dayjsHelp.isDayJs(this.date())) {
+      return this.type() === 'reminder' 
+        && dayjsHelp.isFutureDate(this.date())
+        && !dayjsHelp.isFutureDate(this.date(), dayjsHelp.now().add(1, 'day'));
     }
     //else
     return false;
