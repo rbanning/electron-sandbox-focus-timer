@@ -34,6 +34,7 @@ export function mockTaskRepo(): ITask[] {
       name: 'Client Presentation',
       status: 'active',
       type: 'sales',
+      projectId: '5',
       reminder: '2026-02-15T10:00:00',
       lastUpdated: '2026-02-10T08:30:00'
     }),
@@ -52,6 +53,7 @@ export function mockTaskRepo(): ITask[] {
       name: 'Marketing Campaign Analysis',
       status: 'active',
       type: 'marketing',
+      projectId: '5',
       lastUpdated: '2026-01-28T16:00:00'
     }),
     new Task({
@@ -68,6 +70,7 @@ export function mockTaskRepo(): ITask[] {
       name: 'Q1 Financial Report',
       status: 'completed',
       type: 'finances',
+      projectId: '5',
       description: 'Prepare quarterly financial statements',
       lastUpdated: '2026-01-31T17:30:00'
     }),
@@ -104,6 +107,7 @@ export function mockTaskRepo(): ITask[] {
       status: 'active',
       type: 'teaching',
       description: 'Prepare materials for Angular workshop',
+      projectId: '5',
       reminder: '2026-02-25T14:00:00',
       lastUpdated: '2026-02-09T10:30:00'
     }),
@@ -129,6 +133,7 @@ export function mockTaskRepo(): ITask[] {
       name: 'Contract Review',
       status: 'pending',
       type: 'legal',
+      projectId: '5',
       description: 'Review vendor agreements and SLAs',
       lastUpdated: '2026-02-07T11:00:00'
     }),
