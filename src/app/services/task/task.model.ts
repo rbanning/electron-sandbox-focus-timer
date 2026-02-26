@@ -49,6 +49,8 @@ export interface ITaskBase {
 
   projectId?: Nullable<string>;
   reminder?: Nullable<dayjs.Dayjs>;
+  startDate?: Nullable<dayjs.Dayjs>;
+  endDate?: Nullable<dayjs.Dayjs>;
   lastUpdated: dayjs.Dayjs;
 }
 
@@ -61,6 +63,8 @@ export class TaskBase implements ITaskBase {
 
   projectId?: Nullable<string>;
   reminder?: Nullable<dayjs.Dayjs>;
+  startDate?: Nullable<dayjs.Dayjs>;
+  endDate?: Nullable<dayjs.Dayjs>;
   lastUpdated: dayjs.Dayjs = dayjsHelp.now();
 
   constructor(obj?: unknown) {
@@ -72,6 +76,8 @@ export class TaskBase implements ITaskBase {
       this.description = arg.description ?? this.description;
       this.projectId = arg.projectId ?? this.projectId;
       this.reminder = parsers.toDayjs(arg.reminder);
+      this.startDate = parsers.toDayjs(arg.startDate);
+      this.endDate = parsers.toDayjs(arg.endDate);
       this.lastUpdated = parsers.toDayjs(arg.lastUpdated) ?? this.lastUpdated;
     })
   }
@@ -87,6 +93,7 @@ export class TaskBase implements ITaskBase {
 
   public static changes(current: ITaskBase, pending: ITaskBase) {
     const ret: Partial<Record<keyof ITaskBase, ITaskBase[keyof ITaskBase]>> = {};
+    const dateFields = ['reminder', 'startDate', 'endDate'] as (keyof ITaskBase)[];
     const patchableFields: (keyof ITaskBase)[] = [
       // id cannot be updated 
       // lastUpdated is automatically updated
@@ -95,15 +102,15 @@ export class TaskBase implements ITaskBase {
       'type',
       'description',
       'projectId',
-      'reminder',
+      ...dateFields
     ];
 
     const equals = (key: keyof ITaskBase): boolean => {
       const currentValue = current[key];
       const pendingValue = pending[key];
 
-      if (key === 'reminder') {
-        return dayjsHelp.equals(current.reminder, pending.reminder);
+      if (dateFields.includes(key)) {        
+        return dayjsHelp.equals(currentValue as Nullable<dayjs.Dayjs>, pendingValue as Nullable<dayjs.Dayjs>);
       }
 
       // treat null and undefined as the same

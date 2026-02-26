@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { faAlarmClock, faBold, faSquareQuestion, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
+import { faAlarmClock, faBold, faFlagCheckered, faSneakerRunning, faSquareQuestion, IconDefinition } from '@fortawesome/pro-duotone-svg-icons';
 import { Nullable } from '@common/types';
 import { FormattedDateTimeComponent } from '@components/general/formatted-date-time';
 import { dayjsHelp } from '@common/general';
 
-export type DateType = 'reminder' | 'updated' | 'unknown';
+export type DateType = 'reminder' | 'updated' | 'start' | 'end' | 'unknown';
 
 @Component({
   selector: 'app-task-date',
@@ -43,6 +43,8 @@ export class TaskDateComponent {
     reminder: faAlarmClock,
     updated: faBold,
     unknown: faSquareQuestion,
+    start: faSneakerRunning,
+    end: faFlagCheckered,
   }
   
 

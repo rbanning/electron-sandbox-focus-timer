@@ -22,7 +22,9 @@ import { dayjsHelp } from '@common/general';
       }
       @if(isValid()) {
         <span class="word-spacing-tightest">{{dateFormatted()}}</span>
-        <span class="word-spacing-tightest">{{timeFormatted()}}</span>      
+        @if (inclTime()) {
+          <span class="word-spacing-tightest">{{timeFormatted()}}</span>      
+        }
       }
       @else {
         <span>n/a</span>
@@ -37,6 +39,7 @@ export class FormattedDateTimeComponent {
   type = input<string>('general');
   date = input<Nullable<dayjs.Dayjs>>();
   icon = input<Nullable<IconDefinition>>();
+  inclTime = input(false, { transform: booleanAttribute });
   active = input(false, { transform: booleanAttribute });
   attention = input(false, { transform: booleanAttribute });
 

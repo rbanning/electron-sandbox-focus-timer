@@ -11,12 +11,14 @@ import { Nullable } from '@common/types';
  */
 export interface ITaskFormModel extends Omit<
   ITaskBase,
-  'description' | 'projectId' | 'reminder' | 'lastUpdated'
+  'description' | 'projectId' | 'reminder' | 'startDate' | 'endDate' | 'lastUpdated'
 > {
   description: string;
   projectId: string;
   reminderDate: string;
   reminderTime: string;
+  startDate: string;
+  endDate: string;
   lastUpdated: string;
 }
 
@@ -27,6 +29,8 @@ export function toITaskFormModel(task: ITask): ITaskFormModel {
     projectId: task.projectId ?? '',
     reminderDate: dayjsHelp.format.asInput(task.reminder, ''),
     reminderTime: dayjsHelp.format.asInputTime(task.reminder, ''),
+    startDate: dayjsHelp.format.asInput(task.startDate, ''),
+    endDate: dayjsHelp.format.asInput(task.startDate, ''),
     lastUpdated: dayjsHelp.format.asInput(task.lastUpdated, ''),
   };
 }
@@ -52,7 +56,7 @@ export const taskFormModelSchema = schema<ITaskFormModel>((path) => {
 
   //date (min && max)
   const dateYear = { min: 2000, max: new Date().getFullYear() + 1 };
-  objHelp.asKeysOf<ITaskFormModel>(defaultITaskFormModel, 'reminderDate').forEach((key) => {
+  objHelp.asKeysOf<ITaskFormModel>(defaultITaskFormModel, 'reminderDate', 'startDate', 'endDate').forEach((key) => {
     const schemaPath = path[key];
     if (schemaPath) {
       validate(schemaPath, ({ value }) => {

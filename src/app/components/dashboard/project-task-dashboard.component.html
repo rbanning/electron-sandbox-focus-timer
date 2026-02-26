@@ -1,9 +1,9 @@
 @if (data()) {
   <div class="grid grid-cols-3 lg:grid-cols-6 border border-slate-200">
-    <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 text-center uppercase border-b border-r border-slate-200">
+    <div class="py-2 px-2 md:px-3 lg:px-4 col-span-2 text-center uppercase border-b border-r border-slate-200">
       Project Name
     </div>
-    <div class="py-2 px-2 md:px-3 lg:px-4 col-span-2 text-center uppercase border-b lg:border-r border-slate-200">
+    <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 text-center uppercase border-b lg:border-r border-slate-200">
       Tasks
     </div>
     <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 text-center uppercase border-b border-r border-slate-200">
@@ -16,11 +16,10 @@
       Week 3
     </div>
     @for (item of data(); track item) {
-      <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 font-bold border-b border-r border-slate-200">
+      <div class="py-2 px-2 md:px-3 lg:px-4 col-span-2 font-bold border-b border-r border-slate-200">
         {{item.project?.name ?? "Unassigned"}}
       </div>
-      <div class="py-2 px-2 md:px-3 lg:px-4 col-span-2 flex gap-4 items-center uppercase border-b lg:border-r border-slate-200">
-        <span class="text-sm font-bold">{{item.tasks.length}}</span>
+      <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 border-b lg:border-r border-slate-200">
         <app-task-breakdown-visual [tasks]="item.tasks" class="flex-1" />
       </div>
       <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 text-center uppercase border-b border-r border-slate-200">

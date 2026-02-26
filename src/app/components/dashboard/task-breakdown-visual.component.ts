@@ -8,41 +8,54 @@ import { taskStatusColorTuple } from '@components/task/task-status-color-tuple';
   standalone: true,
   imports: [CommonModule],
   template: `
-    @for (item of counts(); track item) {
-      <span
-        [title]="item.count + ' ' + item.status"
-        [attr.data-percent]="item.percent" 
-        class="inline-block h-4 min-w-2 rounded-e-lg"
-        [style.backgroundColor]="item.color"
-        [style.width]="item.percent"
-        ></span>
-    }
+    <span class="font-semibold">
+      {{completed()}}/{{total()}}
+    </span>
+    <span
+      [title]="percentCompleted() + '% completed'" 
+      class="relative flex-1 bg-slate-100 w-full h-2">
+      @if (percentCompleted() > 0) {
+        <span
+          [style.width]="percentCompleted() + '%'" 
+          class="absolute top-0 left-0 bottom-0 bg-green-300"></span>
+      }
+    </span>
   `,
-  styles: ':host { display: block; width: 100%; }'
+  styles: ':host { display: flex; align-items: center; gap: 0.5rem; width: 100%; }'
 })
 export class TaskBreakdownVisualComponent {
 
   tasks = input.required<ITask[]>();
 
-  protected counts = computed(() => {
-    const total = this.tasks().length;
+  //only interested in tasks that have not been completed!
+  private nonCancelledTasks = computed(() => this.tasks().filter(m => m.status !== 'cancelled'));
+  
+  protected total = computed(() => this.nonCancelledTasks().length );
+  protected completed = computed(() => this.tasks().filter(m => m.status === 'completed').length ); 
+  protected percentCompleted = computed(() => {
+    if (this.total() === 0) {
+      return 0;
+    }
+    //else 
+    return Math.floor(this.completed() / this.total() * 100);
+  })
+  protected breakdown = computed(() => {
+    const total = this.total();
     if (total === 0) { return []; }
     //else
-    const statusList = this.tasks().map(m => m.status);
-    return taskStatusList
-      .filter(m => statusList.includes(m))
-      .reduce((ret, status) => {
+
+    const statusList = taskStatusList.filter(m => m !== 'cancelled');
+    return statusList.map(status => {
       const count = this.tasks().filter(m => m.status === status).length;
       const percent = `${Math.floor((count/total)*100)}%`;
-        
-      ret.push({
+      return {
         status,
         count,
         percent,
         color: taskStatusColorTuple[status][1]
-      });
-      return ret;
-    }, [] as { status: TaskStatus, count: number, percent: string, color: string }[]);
+      };
+    })
+    .filter(m => m.count > 0);
   })
 
 }

@@ -91,14 +91,26 @@
           <app-input-error-message [state]="taskForm.projectId()" />
         </div>
         <div class="field">
-          <label for="reminderDate" [class.dirty]="taskForm.reminderDate().dirty()">Reminder:</label>
+          <label for="startDate" [class.dirty]="taskForm.startDate().dirty()">Start Date:</label>
           <input
             type="date"
-            id="reminderDate"
+            id="startDate"
             placeholder="dd/mm/yyyy"
-            [formField]="taskForm.reminderDate"
+            [formField]="taskForm.startDate"
           />
-          <app-input-error-message [state]="taskForm.reminderDate()">
+          <app-input-error-message [state]="taskForm.startDate()">
+            <span class="text-right text-sm">error</span>
+          </app-input-error-message>
+        </div>
+        <div class="field">
+          <label for="endDate" [class.dirty]="taskForm.endDate().dirty()">End Date:</label>
+          <input
+            type="date"
+            id="endDate"
+            placeholder="dd/mm/yyyy"
+            [formField]="taskForm.endDate"
+          />
+          <app-input-error-message [state]="taskForm.endDate()">
             <span class="text-right text-sm">error</span>
           </app-input-error-message>
         </div>

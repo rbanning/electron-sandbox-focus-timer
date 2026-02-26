@@ -41,7 +41,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
           <div class="flex items-center">
             <div class="-space-y-1 flex-1">
               <app-task-date [date]="task().reminder" type="reminder" />
-              <app-task-date [date]="task().lastUpdated" type="updated" />
+              <app-task-date [date]="task().startDate" type="start" />
+              <app-task-date [date]="task().endDate" type="end" />
             </div>
             @if(!noDetails()) {
               <button 
