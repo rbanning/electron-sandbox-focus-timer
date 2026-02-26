@@ -13,6 +13,7 @@ import { TimerState } from './timer-state.type';
 import { TimerView, timerViews } from './timer-view.type';
 import { isTimerStore, TimerStore } from './timer-store.type';
 import { timeFormatter } from './time-formatter';
+import { ElectronService } from '@services/electron/electron.service';
 
 
 export type TimerServiceConfig = {
@@ -56,6 +57,8 @@ export class TimerService {
 
   public readonly formattedRemaining = computed(() => timeFormatter.remaining(this.remaining()));
   public readonly roundedPercent = computed(() => timeFormatter.percent(this.percent()));
+
+  private electron = inject(ElectronService);
 
   constructor() {  
     const current = this.storage.get<TimerStore>(this.KEY);
@@ -129,6 +132,7 @@ export class TimerService {
     }
     else {
       this.stop();  //completed
+      this.electron.showNotification("TIme's Up", `${timeFormatter.remaining(this.totalSeconds())}`);
     }
   }
   private _updateTimerStore(store: TimerStore): void;

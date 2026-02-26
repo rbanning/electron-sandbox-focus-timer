@@ -12,4 +12,9 @@
       }
     </span>
   </nav>
+  <div class="version-info flex justify-center items-center gap-8 text-xs">
+    @for (item of versions(); track $index) {
+      <span (click)="ping()">{{item.key}}: v{{item.value}}</span>
+    }
+  </div>
 </header>
