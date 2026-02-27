@@ -8,6 +8,11 @@ import { primitive } from "../primitive";
 import { format } from "./formatters";
 import { parsers } from "../parsers";
 
+
+//types
+export const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const;
+export type DayOfWeek = typeof daysOfWeek[number];
+
 //#region >>> THE METHODS <<<
 
 const now = (): dayjs.Dayjs => {
@@ -175,9 +180,33 @@ const difference = (value1: dayjs.ConfigType, value2: dayjs.ConfigType, units: '
 
 }
 
+const max = (d1: dayjs.Dayjs, d2: dayjs.Dayjs): dayjs.Dayjs => {
+  return d1 > d2
+    ? d1
+    : d2;
+}
+const min = (d1: dayjs.Dayjs, d2: dayjs.Dayjs): dayjs.Dayjs => {
+  return d1 > d2
+    ? d2
+    : d1;
+}
 
-const min = (): dayjs.Dayjs => {
+const minDate = (): dayjs.Dayjs => {
   return dayjs('1900-01-01T00:00:00.000Z');
+}
+
+
+
+const moveToClosest = (dow: DayOfWeek, date: dayjs.ConfigType): Nullable<dayjs.Dayjs> => {
+  const d = dayjs(date);
+  if (isDayJs(d)) {
+    const current = d.day();
+    const target = daysOfWeek.findIndex(m => m === dow);
+    const delta = target - current;
+    return d.add(delta, 'day');
+  }
+  //else
+  return null;
 }
 
 //#endregion
@@ -199,6 +228,8 @@ export const dayjsHelp = {
   isPastDue,
   isWithin,
   difference,
-  min,
+  moveToClosest,
+  min, max,
+  minDate,
   format
 };
