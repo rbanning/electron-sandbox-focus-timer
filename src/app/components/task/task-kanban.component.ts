@@ -1,5 +1,6 @@
 import { booleanAttribute, Component, computed, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CdkDropList, CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { faFilters, faSort } from '@fortawesome/pro-duotone-svg-icons';
 import { arrayHelp, strHelp } from '@common/general';
 import { SortInfo, TaskService } from '@services/task/task.service';
@@ -12,6 +13,7 @@ import { TaskListSortSelectorComponent } from './task-list-sort-selector.compone
 import { TaskCardComponent } from './task-card.component';
 import { TaskKanbanColHeadingComponent } from './task-kanban-col-heading.component';
 import { TaskPopupEditorComponent } from './task-popup-editor.component';
+import { castAs } from '@common/types';
 
 type TaskDictionary = {[key in TaskStatus]?: ITask[]}
 
@@ -21,7 +23,8 @@ type TaskDictionary = {[key in TaskStatus]?: ITask[]}
   imports: [CommonModule, FontAwesomeModule,
     TaskListFilterStatusComponent, TaskListFilterProjectComponent,
     TaskListSortSelectorComponent, TaskKanbanColHeadingComponent,
-    TaskCardComponent, TaskPopupEditorComponent
+    TaskCardComponent, TaskPopupEditorComponent,
+    CdkDropList, CdkDrag
   ],
   templateUrl: './task-kanban.component.html',
   styles: `:host { display: block; }`,
@@ -53,7 +56,15 @@ export class TaskKanbanComponent {
       dict[status] = tasks.filter(m => m.status === status && (projectFilter.length === 0 || projectFilter.includes(m.projectId ?? 'never')));
       return dict;
     }, {});
-  })
+  });
+  protected activeStatusList = computed(() => {
+    const active = Object.keys(this.filteredTasks());
+    return this.statusList().reduce((dict: {[key in TaskStatus]?: string[]}, status) => {
+      dict[status] = active.filter(m => m !== status).map(m => `${m}List`)
+      return dict;
+    }, {});
+  });
+
   protected showFilterUI = signal(false);
 
   private filters = {
@@ -105,14 +116,27 @@ export class TaskKanbanComponent {
 
 
   protected updateTask (task: ITask) {
-    console.log('DEBUG: updateTask (list)', task);
-    if (this.service.exists(task.id)) {
-      this.service.update(task.id, task);
+    const existing = this.service.get(task.id);
+    if (existing) {
+      const changes = Task.changes(existing, task);
+      this.service.update(task.id, changes);
+      //todo: add toast;
     }
     else {
       this.service.add(task);
+      //todo: add toast;
     }
   }
 
+  protected drop(event: any) {
+    const { container, previousContainer } = event;
+    if (container.data !== previousContainer.data) {
+      //extract the task and new status
+      const { data: task } = event.item;
+      const { data: status } = container;
+      task.status = status;
+      this.updateTask(task);
+    }
+  }
 
 }

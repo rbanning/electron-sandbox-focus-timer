@@ -18,6 +18,7 @@ export function mockTaskRepo(): ITask[] {
       name: 'Blog Post - Typescript',
       status: 'active',
       type: 'professional development',
+      startDate: '2026-01-03',
       lastUpdated: '2025-12-31T09:02:00'
     }),
     new Task({
@@ -27,6 +28,8 @@ export function mockTaskRepo(): ITask[] {
       type: 'design',
       projectId: '1',
       description: 'Design normalized database schema for calendar events',
+      startDate: '2025-12-05',
+      endDate: '2025-12-13',
       lastUpdated: '2025-11-15T14:20:00'
     }),
     new Task({
@@ -34,7 +37,9 @@ export function mockTaskRepo(): ITask[] {
       name: 'Client Presentation',
       status: 'active',
       type: 'sales',
+      projectId: '5',
       reminder: '2026-02-15T10:00:00',
+      startDate: '2026-01-20',
       lastUpdated: '2026-02-10T08:30:00'
     }),
     new Task({
@@ -52,6 +57,8 @@ export function mockTaskRepo(): ITask[] {
       name: 'Marketing Campaign Analysis',
       status: 'active',
       type: 'marketing',
+      projectId: '5',
+      startDate: '2026-01-12',
       lastUpdated: '2026-01-28T16:00:00'
     }),
     new Task({
@@ -61,6 +68,7 @@ export function mockTaskRepo(): ITask[] {
       type: 'data management',
       projectId: '6',
       description: 'Optimize ETL pipeline for image processing',
+      startDate: '2025-12-18',
       lastUpdated: '2025-12-20T13:15:00'
     }),
     new Task({
@@ -68,7 +76,10 @@ export function mockTaskRepo(): ITask[] {
       name: 'Q1 Financial Report',
       status: 'completed',
       type: 'finances',
+      projectId: '5',
       description: 'Prepare quarterly financial statements',
+      startDate: '2026-01-10',
+      endDate: '2026-01-22',
       lastUpdated: '2026-01-31T17:30:00'
     }),
     new Task({
@@ -78,6 +89,7 @@ export function mockTaskRepo(): ITask[] {
       type: 'coding',
       projectId: '5',
       reminder: '2026-02-20T10:00:00',
+      startDate: '2026-01-25',
       lastUpdated: '2026-02-11T09:15:00'
     }),
     new Task({
@@ -96,6 +108,7 @@ export function mockTaskRepo(): ITask[] {
       projectId: '3',
       description: 'Address vulnerabilities found in penetration testing',
       reminder: '2026-02-13T08:00:00',
+      startDate: '2026-01-30',
       lastUpdated: '2026-02-12T07:45:00'
     }),
     new Task({
@@ -104,7 +117,9 @@ export function mockTaskRepo(): ITask[] {
       status: 'active',
       type: 'teaching',
       description: 'Prepare materials for Angular workshop',
+      projectId: '5',
       reminder: '2026-02-25T14:00:00',
+      startDate: '2026-01-15',
       lastUpdated: '2026-02-09T10:30:00'
     }),
     new Task({
@@ -122,6 +137,8 @@ export function mockTaskRepo(): ITask[] {
       status: 'completed',
       type: 'data visualization',
       projectId: '4',
+      startDate: '2025-12-01',
+      endDate: '2025-12-10',
       lastUpdated: '2025-10-25T12:00:00'
     }),
     new Task({
@@ -129,6 +146,7 @@ export function mockTaskRepo(): ITask[] {
       name: 'Contract Review',
       status: 'pending',
       type: 'legal',
+      projectId: '5',
       description: 'Review vendor agreements and SLAs',
       lastUpdated: '2026-02-07T11:00:00'
     }),
@@ -139,6 +157,7 @@ export function mockTaskRepo(): ITask[] {
       type: 'research',
       projectId: '8',
       description: 'Research best practices for fitness tracking APIs',
+      startDate: '2026-01-22',
       lastUpdated: '2026-02-10T13:45:00'
     }),
     new Task({
@@ -147,6 +166,8 @@ export function mockTaskRepo(): ITask[] {
       status: 'completed',
       type: 'operations',
       projectId: '13',
+      startDate: '2026-01-08',
+      endDate: '2026-01-29',
       lastUpdated: '2026-02-06T09:00:00'
     }),
     new Task({
@@ -157,6 +178,7 @@ export function mockTaskRepo(): ITask[] {
       projectId: '6',
       description: 'Build automated image preprocessing workflow',
       reminder: '2026-02-22T10:00:00',
+      startDate: '2026-01-28',
       lastUpdated: '2026-02-11T16:30:00'
     }),
     new Task({
@@ -166,6 +188,7 @@ export function mockTaskRepo(): ITask[] {
       type: 'client relations',
       projectId: '7',
       description: 'Coordinate kickoff meeting and requirements gathering',
+      startDate: '2026-02-01',
       lastUpdated: '2026-02-10T10:00:00'
     }),
     new Task({
@@ -175,6 +198,7 @@ export function mockTaskRepo(): ITask[] {
       type: 'data analytics',
       projectId: '13',
       description: 'Train NLP model with updated dataset',
+      startDate: '2026-01-18',
       lastUpdated: '2026-01-30T14:15:00'
     }),
   ]

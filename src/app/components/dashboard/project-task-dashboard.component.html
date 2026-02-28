@@ -1,0 +1,55 @@
+@if (data()) {
+  <div class="grid grid-cols-3 lg:grid-cols-6 border border-slate-200">
+    <div class="py-2 px-2 md:px-3 lg:px-4 col-span-2 text-center uppercase border-b border-r border-slate-200">
+      Project Name
+    </div>
+    <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 text-center uppercase border-b lg:border-r border-slate-200">
+      Tasks
+    </div>
+    @for(week of weekHeadings(); track week) {
+      <div [class]="
+        'py-2 px-2 md:px-3 lg:px-4 col-span-1 text-center uppercase border-b border-r border-slate-200'
+        + ($last ? ' border-r ' : '')">
+        <span class="text-xs">Week of</span> {{week}}
+      </div>
+    }
+    @for (item of data(); track item) {
+      <div class="py-2 px-2 md:px-3 lg:px-4 col-span-2 font-bold border-b border-r border-slate-200">
+        {{item.project?.name ?? "Unassigned"}}
+      </div>
+      <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 border-b lg:border-r border-slate-200">
+        <app-task-breakdown-visual [tasks]="item.tasks" class="flex-1" />
+      </div>
+      <div class="relative col-span-3 grid border-b border-slate-200">
+        <app-project-summary-week-flow [start]="startWeekFlowDate()" [tasks]="item.tasks" class="self-center px-2 md:px-3 lg:px-4" />
+        @for(bar of bars; track bar) {
+          <div
+          [style.left]="bar" 
+          class="absolute top-0 h-full w-px bg-slate-200"></div>
+        }
+      </div>
+      @for(task of item.tasks; track task) {
+        <div class="py-2 px-2 md:px-3 lg:px-4 col-span-2 font-medium border-b border-r border-slate-200">
+          <span class="pl-4">{{task.name}}</span>
+        </div>
+        <div class="py-2 px-2 md:px-3 lg:px-4 col-span-1 text-sm flex items-center gap-2 border-b lg:border-r border-slate-200">
+          <app-task-status-box [status]="task.status" />
+          <span>
+            {{task.status}}
+          </span>
+        </div>
+        <div class="relative col-span-3 grid border-b border-slate-200">
+          <app-project-task-week-flow [start]="startWeekFlowDate()" [task]="task" class="self-center px-2 md:px-3 lg:px-4" />
+          @for(bar of bars; track bar) {
+            <div
+            [style.left]="bar" 
+            class="absolute top-0 h-full w-px bg-slate-200 z-10"></div>
+          }
+
+        </div>
+
+      }
+    }
+  </div>
+
+}

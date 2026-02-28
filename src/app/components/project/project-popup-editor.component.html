@@ -16,9 +16,9 @@
 @if(active()) {
 
   <div class="overlay"></div>
-  <div class="modal">
+  <div class="modal editor">
       <!-- header -->
-      <div class="section thin font-bold bg-slate-500 text-slate-50 flex items-center">
+      <div class="section compact font-bold bg-slate-500 text-slate-50 flex items-center">
         <span class="flex-1">{{isNew() ? 'New' : 'Edit'}} Project</span>
         <button 
           type="button"
@@ -28,7 +28,7 @@
         </button>
       </div>
       <!-- body -->
-      <form class="section">
+      <form class="section compact">
         <div class="field">
           <label for="name" [class.dirty]="projectForm.name().dirty()">Name:</label>
           <input
@@ -77,7 +77,7 @@
           <app-input-error-message [state]="projectForm.type()" />
         </div>
         <div class="field">
-          <label for="startDate" [class.dirty]="projectForm.startDate().dirty()">Start:</label>
+          <label for="startDate" [class.dirty]="projectForm.startDate().dirty()">Started:</label>
           <input
             type="date"
             id="startDate"

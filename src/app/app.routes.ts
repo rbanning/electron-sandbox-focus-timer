@@ -5,6 +5,7 @@ import { ProjectsViewComponent } from '@views/projects/project-view.component';
 import { TestViewComponent } from '@views/test/test-view.component';
 import { titleResolver } from './resolvers/title.resolver';
 import { TaskViewComponent } from '@views/task/task-view.component';
+import { TaskDetailsViewComponent } from '@views/task/task-details-view.component';
 
 export const routes: Routes = [
   {
@@ -21,6 +22,11 @@ export const routes: Routes = [
   {
     path: 'tasks',
     component: TaskViewComponent,
+    title: titleResolver,
+  },
+  {
+    path: 'tasks/:id',
+    component: TaskDetailsViewComponent,
     title: titleResolver,
   },
   {

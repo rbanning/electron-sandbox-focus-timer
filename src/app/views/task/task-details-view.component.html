@@ -1,0 +1,20 @@
+<div class="view-area">
+  <h1 class="flex items-center gap-4">
+    <a [routerLink]="['/tasks']" title="back to tasks">
+      <fa-duotone-icon [icon]="icons.back" />
+    </a>
+    <span>
+      Tasks
+    </span>
+  </h1>
+  <div class="my-4 max-w-4xl mx-auto">
+    @if (task()) {
+      <app-task-card-detail [task]="task()" (save)="save($event)" (cancel)="cancel()" />
+    }
+    @else {
+      <h1>Missing</h1>
+      <div class="text-center">The task you requested is no longer available.</div>
+    }
+  </div>
+  
+</div>
