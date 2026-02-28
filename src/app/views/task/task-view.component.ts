@@ -5,7 +5,7 @@ import { TaskKanbanComponent } from '@components/task/task-kanban.component';
 import { gridListFormats } from '@components/common/format-grid-list.type';
 import { ProjectTaskDashboardComponent } from '@components/dashboard/project-task-dashboard.component';
 
-const viewList = ['Kanban', 'Dashboard', ...gridListFormats] as const;
+const viewList = ['Dashboard', 'Kanban', ...gridListFormats] as const;
 type View = typeof viewList[number];
 
 @Component({

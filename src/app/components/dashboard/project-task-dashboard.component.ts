@@ -6,7 +6,8 @@ import { ITask } from '@services/task/task.model';
 import { dayjsHelp, primitive, strHelp } from '@common/general';
 import { TaskBreakdownVisualComponent } from './task-breakdown-visual.component';
 import { TaskStatusBoxComponent } from '@components/task/task-status-box.component';
-import { WeekFlowComponent } from '@components/general/week-flow.component';
+import { ProjectTaskWeekFlowComponent } from './project-task-week-flow.component';
+import { ProjectSummaryWeekFlowComponent } from './project-summary-week-flow.component';
 
 
 type ProjectTask = {
@@ -20,7 +21,8 @@ type ProjectTask = {
   imports: [CommonModule,
     TaskBreakdownVisualComponent,
     TaskStatusBoxComponent,
-    WeekFlowComponent
+    ProjectTaskWeekFlowComponent,
+    ProjectSummaryWeekFlowComponent,
   ],
   templateUrl: './project-task-dashboard.component.html',
   styles: ':host { display: block; }'
@@ -82,6 +84,8 @@ export class ProjectTaskDashboardComponent {
       this.startWeekFlowDate().add(2, 'week').format("MMM-DD"),
     ];
   })
+
+  bars = ['33.3%', '66.6%'];
 
   //services
   private taskService = inject(TaskService);
